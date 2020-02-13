@@ -5,7 +5,7 @@ const Shuttle=()=>{
 
     return(
         <>
-        더미이미지
+          <img style={{width:'100%',height:'38em'}} src="/shuttle.png"></img>
         </>
     )   
 
