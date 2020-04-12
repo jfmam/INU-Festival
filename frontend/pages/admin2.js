@@ -1,20 +1,28 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
 
 const Input=styled.input`
-    background-color='#f0f0f0'
+    border:'none'
+    backgroundColor='#f0f0f0'
 `
 
 const admin2=()=>{
+    // let Menu=new Array(10).fill({food:'',price:'',soldOut:true});
     const [rows,setRows]=useState([1,2,3,4,5]);
-    const [sold,setSold]=useState(true)
     const [fullBtn,setFullBtn]=useState(false);
     const [emptyBtn,setEmptyBtn]=useState(false);
+    const [Meny, setMenu] = useState(['', '', false], ['', '', false], ['', '', false], ['', '', false], ['', '', false]
+    , ['', '', false], ['', '', false], ['', '', false], ['', '', false], ['', '', false]
+    )
 
     const fBtn=useRef();
     const eBtn=useRef();
     const tableBody=useRef();
+
+    // function changeButton(){
+        
+    // }
 
     if(emptyBtn){
         eBtn.current.style.borderColor="#64a5ff"
@@ -32,7 +40,9 @@ const admin2=()=>{
         setRows([...rows,1])
     },[rows])
 
+    useEffect(()=>{
 
+    },[])
     return(
         <>
         <form>
@@ -62,12 +72,16 @@ const admin2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={()=>{setFullBtn(true);setEmptyBtn(false)}}
+                <button type='button' title='만석' ref={fBtn} onClick={(e)=>{
+                    e.preventDefault();
+                    setFullBtn(true);setEmptyBtn(false)}}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
 
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={()=>{setEmptyBtn(true);setFullBtn(false)}} defaultChecked={true}
+                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={(e)=>{
+                     e.preventDefault();
+                     setEmptyBtn(true);setFullBtn(false)}} defaultChecked={true}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>
@@ -86,14 +100,32 @@ const admin2=()=>{
                             <th style={{borderBottom:'1px solid white',width:'19%'}} >품질</th>
                             </tr>
                         </thead>
-                        <tbody contentEditable={true} >
+                        <tbody >
                          {rows.map((item,index)=>{
                              return (
                              <tr style={{height:36}} key={index}>
-                                 <td style={{borderBottom:'1px solid white'}}>gd</td>
-                                 <td style={{borderLeft:'1px solid white',borderRight:'1px solid white',borderBottom:'1px solid white'}}>gd</td>
-                             <td onClick={async()=>{sold?setSold(false):setSold(true)}} contentEditable={false} style={{alignSelf:'center',borderBottom:'1px solid white'}}>{sold?<img src='reveal.png'/>
-                             :<img src='unreveal.png'/>}</td>
+                                 <td contentEditable={false}  style={{borderBottom:'1px solid white'}} >
+                                  <input onChange={(e)=>{
+                                      e.preventDefault();
+                                 
+                                      console.log(index)
+                                  }}></input>
+                                 </td>
+                                 <td style={{borderLeft:'1px solid white',borderRight:'1px solid white',borderBottom:'1px solid white'}}>
+                                      <input onChange={e=>{
+                                      e.preventDefault();
+                                      Menu[index].price=e.target.value;
+                                      console.log(Menu[index].price)
+                                  }}></input>
+                                 </td>
+                             <td  style={{alignSelf:'center',borderBottom:'1px solid white'}}>{Menu[index].soldOut?
+                             <img onClick={(e)=>{
+                                 console.log(Menu);
+                                 Menu[index].soldOut=true;
+                             }} src='reveal.png'/>
+                             :<img onClick={(e)=>{
+                                 Menu[index].soldOut=false;
+                             }} src='unreveal.png'/>}</td>
                              </tr>)
                          })}
                         </tbody>
