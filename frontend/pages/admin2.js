@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 
 
@@ -10,19 +10,20 @@ const Input=styled.input`
 const admin2=()=>{
     // let Menu=new Array(10).fill({food:'',price:'',soldOut:true});
     const [rows,setRows]=useState([1,2,3,4,5]);
+    const [cols,setCols]=useState([0,1,2]);
     const [fullBtn,setFullBtn]=useState(false);
     const [emptyBtn,setEmptyBtn]=useState(false);
-    const [Meny, setMenu] = useState(['', '', false], ['', '', false], ['', '', false], ['', '', false], ['', '', false]
-    , ['', '', false], ['', '', false], ['', '', false], ['', '', false], ['', '', false]
-    )
+    const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
+        , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
+        , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
 
     const fBtn=useRef();
     const eBtn=useRef();
-    const tableBody=useRef();
-
     // function changeButton(){
         
     // }
+
+    
 
     if(emptyBtn){
         eBtn.current.style.borderColor="#64a5ff"
@@ -39,6 +40,10 @@ const admin2=()=>{
     const addTable=useCallback(()=>{
         setRows([...rows,1])
     },[rows])
+
+    const switchSoldOut=useCallback((index)=>{
+        Menu[index].soldOut ? Menu[index].soldOut = false : Menu[index].soldOut=true;
+    },[Menu])
 
     useEffect(()=>{
 
@@ -100,34 +105,42 @@ const admin2=()=>{
                             <th style={{borderBottom:'1px solid white',width:'19%'}} >품질</th>
                             </tr>
                         </thead>
-                        <tbody >
-                         {rows.map((item,index)=>{
-                             return (
-                             <tr style={{height:36}} key={index}>
-                                 <td contentEditable={false}  style={{borderBottom:'1px solid white'}} >
-                                  <input onChange={(e)=>{
-                                      e.preventDefault();
-                                 
-                                      console.log(index)
-                                  }}></input>
-                                 </td>
-                                 <td style={{borderLeft:'1px solid white',borderRight:'1px solid white',borderBottom:'1px solid white'}}>
-                                      <input onChange={e=>{
-                                      e.preventDefault();
-                                      Menu[index].price=e.target.value;
-                                      console.log(Menu[index].price)
-                                  }}></input>
-                                 </td>
-                             <td  style={{alignSelf:'center',borderBottom:'1px solid white'}}>{Menu[index].soldOut?
+                        <tbody>
+                         {rows.fill(rows.length).map((item,index)=>{
+                             return(
+                            <tr style={{height:36}} key={index}>
+                                {cols.fill(cols.length).map((ele,i)=>{
+                                  return( 
+                                <Fragment>
+                             <td contentEditable={true} onKeyUp={
+                                 (e)=>{
+                                     i===0?Menu[index].food=e.target.textContent:Menu[index].price=e.target.textContent
+                                 }
+                             } style={{border:'1px solid white'}}>
+                             {
+                             i===2&&(Menu[index].soldOut===false?<img onClick={ switchSoldOut(index)
+                             } src='reveal.png'/>
+                             :<img onClick={async(e)=>{
+                                   console.log(Menu[index].soldOut)
+                                    console.log(Menu)
+                             switchSoldOut(index);
+                             }} src='unreveal.png'/>)}    
+                             </td>
+                              {/* <td style={{borderBottom:'1px solid white'}}>{Menu[index].soldOut?
                              <img onClick={(e)=>{
                                  console.log(Menu);
                                  Menu[index].soldOut=true;
                              }} src='reveal.png'/>
                              :<img onClick={(e)=>{
                                  Menu[index].soldOut=false;
-                             }} src='unreveal.png'/>}</td>
-                             </tr>)
-                         })}
+                             }} src='unreveal.png'/>}</td> */}
+                             </Fragment>
+                                  )
+                                })}
+                            </tr>
+                             )
+                         })
+                         }         
                         </tbody>
                     </table>
                 </div>

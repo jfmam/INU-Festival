@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
     Schedule.associate = (db) => {
-        db.Schedule.belongsToMany(db.Timetable);
+        db.Schedule.belongsToMany(db.Timetable,{through:'timeSchedule'});
     };
     return Schedule;
 };

@@ -2,13 +2,18 @@ const express = require('express');
 const db = require('../models');
 const router = express.Router();
 
-router.get('/timetable', async (req, res, next) => {//timetable은 단순히 축제날만보내준다
+router.get('/timetable/:date', async (req, res, next) => {//timetable은 단순히 축제날만보내준다
     try{
-    const shedule = await db.Image.findAll({
-     attributes:['Date']
+    const schedule = await db.Timetable.findAll({
+    where:req.params.date,
+    include:[{
+        model:db.Schedule,
+        attributes:'schedule'
+    }]
     })
-    res.json(shedule);
+    res.json(schedule);
 }catch(e){
     console.error(e);
 }
 })
+module.exports = router;
