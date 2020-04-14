@@ -7,7 +7,7 @@ const Input=styled.input`
     backgroundColor='#f0f0f0'
 `
 
-const admin2=()=>{
+const manager2=()=>{
     // let Menu=new Array(10).fill({food:'',price:'',soldOut:true});
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
@@ -16,6 +16,7 @@ const admin2=()=>{
     const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
+    const [boothname,setBoothname]=useState('');
 
     const fBtn=useRef();
     const eBtn=useRef();
@@ -37,25 +38,26 @@ const admin2=()=>{
         eBtn.current.style.borderColor = "#333"
         eBtn.current.style.color = '#333'
     }
+  
+    //  const switchSoldOut=useCallback((index)=>{
+    //      Menu[index].soldOut ? Menu[index].soldOut = false : Menu[index].soldOut=true;
+    //  },[Menu])
     const addTable=useCallback(()=>{
         setRows([...rows,1])
     },[rows])
 
-    const switchSoldOut=useCallback((index)=>{
-        Menu[index].soldOut ? Menu[index].soldOut = false : Menu[index].soldOut=true;
-    },[Menu])
 
     useEffect(()=>{
-
-    },[])
+        console.log('변경')
+    },[Menu])
     return(
         <>
-        <form>
+        <form onSubmit={()=>{submitBooth}}>
             <div style={{marginTop:'2em',marginBottom:'2.7em'}}>
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input type='text' placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -64,11 +66,11 @@ const admin2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input type='text' placeholder='00 : 00' 
+                <input  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input type='text' placeholder='00 : 00' 
+                 <input   type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>
@@ -114,26 +116,19 @@ const admin2=()=>{
                                 <Fragment>
                              <td contentEditable={true} onKeyUp={
                                  (e)=>{
-                                     i===0?Menu[index].food=e.target.textContent:Menu[index].price=e.target.textContent
+                                     i===0?Menu.splice(index,1,{food:e.target.textContent,price:Menu[index].price,soldOut:Menu[index].soldOut})
+                                     :Menu.splice(index,1,{food:Menu[index].food,price:e.target.textContent,soldOut:Menu[index].soldOut})
                                  }
                              } style={{border:'1px solid white'}}>
                              {
-                             i===2&&(Menu[index].soldOut===false?<img onClick={ switchSoldOut(index)
+                             i===2&&(Menu[index].soldOut===false?<img onClick={()=>{
+                              Menu.splice(index,1,{food:Menu[index].food,price:Menu[index].price,soldOut:true})
+                             }     
                              } src='reveal.png'/>
-                             :<img onClick={async(e)=>{
-                                   console.log(Menu[index].soldOut)
-                                    console.log(Menu)
-                             switchSoldOut(index);
+                             :<img onClick={(e)=>{
+                             Menu.splice(index,1,{food:Menu[index].food,price:Menu[index].price,soldOut:false}) 
                              }} src='unreveal.png'/>)}    
                              </td>
-                              {/* <td style={{borderBottom:'1px solid white'}}>{Menu[index].soldOut?
-                             <img onClick={(e)=>{
-                                 console.log(Menu);
-                                 Menu[index].soldOut=true;
-                             }} src='reveal.png'/>
-                             :<img onClick={(e)=>{
-                                 Menu[index].soldOut=false;
-                             }} src='unreveal.png'/>}</td> */}
                              </Fragment>
                                   )
                                 })}
@@ -146,7 +141,9 @@ const admin2=()=>{
                 </div>
             </div>
             <div style={{textAlign:'center'}}>
-                  <label style={{color:'#223ca3',fontSize:13}} onClick={()=>{addTable()}}>+추가하기</label>
+                  <label style={{color:'#223ca3',fontSize:13}} onClick={(e)=>{
+                      e.preventDefault()
+                      addTable()}}>+추가하기</label>
             </div>
         </form>
         <footer style={{textAlign:'center'}}>
@@ -155,4 +152,4 @@ const admin2=()=>{
         </>
     )
 }   
-export default admin2;
+export default manager2;

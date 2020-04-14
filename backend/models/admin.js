@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull:false,
             primaryKey:true
         },
+        boothName:{
+             type:DataTypes.STRING,
+             allowNull: false,
+        },
         opTimeOpen:{
             type:DataTypes.STRING
         },

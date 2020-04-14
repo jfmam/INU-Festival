@@ -4,7 +4,7 @@ import image from './image'
 import menu from './menu'
 import timetable from './timetable'
 
-// axios.defaults.baseURL = 'http://localhost:3065/api';
+axios.defaults.baseURL = 'http://localhost:5000/api';
 
 export default function* rootSaga() {
   yield all([

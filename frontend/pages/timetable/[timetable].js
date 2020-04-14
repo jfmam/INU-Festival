@@ -5,6 +5,7 @@ import Timetable from '../timetable'
 
 const TimeTableDetail=()=>{
      const [dummmySchedue,setDummySchedule]=useState(['17:00 댄스동아리공연','18:00 장기자랑',])
+      const {scheduleInfo}=useSelector(state=>state.timetable)
  return (
      <> 
      <Timetable>

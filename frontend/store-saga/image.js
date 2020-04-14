@@ -5,7 +5,7 @@ import  { SHUTTLEIMAGE_REQUEST, SHUTTLEIMAGE_SUCCESS, SHUTTLEIMAGE_FAILURE, INDE
 
 
 function loadIndexAPI() {
- return axios.get('',{});
+ return axios.get('/image',{});
 }
 
 function* loadIndex(action){
@@ -29,7 +29,7 @@ function* watchLoadIndex() {
 }
 
 function loadShuttleAPI() {
- return axios.get('',{});
+ return axios.get('/image/shuttle',{});
 }
 
 function* loadShuttle(action){

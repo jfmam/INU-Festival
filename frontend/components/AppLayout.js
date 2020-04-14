@@ -59,7 +59,7 @@ const AppLayout=({children})=>{
         })}
         </div>
         <div style={{marginLeft:'17%',marginTop:'21em'}}>
-            <Link href={{pathname:'/admin'}}><a onClick={()=>{ setToggle(false)
+            <Link href={{pathname:'/manager'}}><a onClick={()=>{ setToggle(false)
             drawer();}}><strong>운영자페이지</strong></a></Link>
         </div>
     </aside>

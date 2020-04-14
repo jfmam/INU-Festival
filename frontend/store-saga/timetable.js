@@ -5,8 +5,8 @@ import  {SCHEDULEGET_REQUEST,SCHEDULEGET_SUCCESS,SCHEDULEGET_FAILURE} from '../s
 
 
 
-function loadScheduleAPI(scQueary){
-    // return axios.get() //와일드카드 주소
+function loadScheduleAPI(scQuery){
+     return axios.get(`/timetable/${scQuery}`) //와일드카드 주소
 }
 
 

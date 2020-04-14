@@ -1,8 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
     const Timetable = sequelize.define('Timetable', {
-        Date:{
-            type:DataTypes.STRING
-        },
+        scheduleDate:{
+            type:DataTypes.STRING,
+             primaryKey:true,
+             allowNull:false     
+        }, 
+        schedule: {
+            type: DataTypes.STRING
+        }
       
     }, {
         charset: 'utf8mb4',

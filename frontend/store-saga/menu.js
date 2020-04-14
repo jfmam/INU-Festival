@@ -4,7 +4,7 @@ import  { CODE_REQUEST, CODE_SUCCESS, CODE_FAILURE, MENUPOST_REQUEST, MENUPOST_F
 
 
 function PostMenuAPI(menuData){
- return axios.post('',menuData);
+ return axios.post('/admin',menuData);
 }
 
 function* PostMenu(action){
@@ -28,7 +28,7 @@ function* watchPostMenu() {
 }
 
 function loadCodeAPI(Code){
- return axios.get('',Code);
+ return axios.get('/admin',Code);
 }
 
 function* loadCode(action){
