@@ -14,8 +14,8 @@ const Shuttle=()=>{
   return(
     
         <>
-
-          <img style={{width:'100%',height:'38em'}} onClick={()=>{console.log(Menu[0])}} src="/shuttle.png"></img>
+     
+          <img style={{width:'100%',height:'38em'}}  src="/shuttle.png"></img>
         </>
     )   
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import {useDispatch} from 'react-redux'
+import React,{useEffect} from 'react'
+import {useDispatch,useSelector} from 'react-redux'
 import { INDEXIMAGE_REQUEST } from '../store/image';
 //toggle을 redux에 넣어주고 나면 opacaty를 0.7정도로주자
 const startPage=()=>{

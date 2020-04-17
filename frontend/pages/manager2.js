@@ -48,7 +48,7 @@ const manager2=()=>{
 
 
     useEffect(()=>{
-        console.log('변경')
+        console.log(Menu)
     },[Menu])
     return(
         <>
@@ -116,17 +116,26 @@ const manager2=()=>{
                                 <Fragment>
                              <td contentEditable={true} onKeyUp={
                                  (e)=>{
-                                     i===0?Menu.splice(index,1,{food:e.target.textContent,price:Menu[index].price,soldOut:Menu[index].soldOut})
-                                     :Menu.splice(index,1,{food:Menu[index].food,price:e.target.textContent,soldOut:Menu[index].soldOut})
+                                     i===0?setMenu(
+                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{food:e.target.textContent}) :v})
+                                     )
+                                     :    
+                                     setMenu(
+                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{price:e.target.textContent}) :v})
+                                     )               
                                  }
                              } style={{border:'1px solid white'}}>
                              {
                              i===2&&(Menu[index].soldOut===false?<img onClick={()=>{
-                              Menu.splice(index,1,{food:Menu[index].food,price:Menu[index].price,soldOut:true})
+                                 setMenu(
+                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v})
+                                     )   
                              }     
                              } src='reveal.png'/>
                              :<img onClick={(e)=>{
-                             Menu.splice(index,1,{food:Menu[index].food,price:Menu[index].price,soldOut:false}) 
+                                setMenu(
+                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v})
+                                     )   
                              }} src='unreveal.png'/>)}    
                              </td>
                              </Fragment>

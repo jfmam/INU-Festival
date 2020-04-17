@@ -45,8 +45,8 @@ const AppLayout=({children})=>{
     {toggle&&
     <div>
     <div style={{position:'absolute',width:'100%',height:'100%',zIndex:19,backgroundColor:'rgba(35, 35, 35, 0.7)',opacity:0.7}}></div>
-    <aside style={{position:'absolute',zIndex:20,width:'77%',height:'96%'
-    ,backgroundColor:'#ffffff',top:32,left:'30%',border:'1px solid #d3d3d3'}}>
+    <aside className='drawer' style={{position:'absolute',zIndex:20,width:'77%',height:'96%'
+   ,backgroundColor:'#ffffff',top:32,left:'30%',border:'1px solid #d3d3d3'}}>
         <img style={{marginLeft:'82%',marginTop:13.2}} onClick={async()=>{await getToggle(false);
         await drawer()
         }} src='/xbtn.png'></img>
