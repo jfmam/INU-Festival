@@ -24,7 +24,9 @@ const manager2=()=>{
         
     // }
 
-    
+    const submitBooth=()=>{
+
+    }
 
     if(emptyBtn){
         eBtn.current.style.borderColor="#64a5ff"
@@ -57,7 +59,7 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -66,11 +68,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input  type='text' placeholder='00 : 00' 
+                <input name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input   type='text' placeholder='00 : 00' 
+                 <input  name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>

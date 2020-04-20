@@ -9,7 +9,7 @@ import reducer from '../store';
 import rootSaga from '../store-saga';
 
 
-const Home=({Component,store})=>{
+const Home=({Component,store,pageProps})=>{
     return(
         <Provider store={store}>
          <Head>
@@ -17,10 +17,20 @@ const Home=({Component,store})=>{
         <title>InuFestival</title>
       </Head>
     <AppLayout>
-        <Component/>
+        <Component {...pageProps}/>
     </AppLayout>
     </Provider>
     )
+}
+
+Home.getInitialProps=async (context)=>{
+  console.log(context);
+  const {ctx}=context;
+  let pageProps={};
+  if(context.Component.getInitialProps){
+    pageProps=await context.Component.getInitialProps(ctx);
+  }
+  return {pageProps};
 }
 
 const configureStore = (initialState, options) => {

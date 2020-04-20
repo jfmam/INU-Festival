@@ -1,7 +1,8 @@
 import React, { useCallback, useState,useRef, Children } from 'react'
 import Link from 'next/link'
 import Timetable from '../timetable'
-
+import {useDispatch,useSelector} from 'react-redux'
+import {useRouter} from 'next/router'
 
 const TimeTableDetail=()=>{
      const [dummmySchedue,setDummySchedule]=useState(['17:00 댄스동아리공연','18:00 장기자랑',])
@@ -24,5 +25,14 @@ const TimeTableDetail=()=>{
      
  )
 }
+
+// TimeTableDetail.getInitialProps=async(context)=>{
+//     const router=useRouter();
+//     const {timetable}=router.query
+//     console.log({timetable})
+//     context.store.dispatch({
+
+//     })
+// }
 
 export default TimeTableDetail;

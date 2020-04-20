@@ -17,4 +17,10 @@ const startPage=()=>{
     )
 }
 
+// startPage.getInitialProps=async(context)=>{
+//   context.store.dispatch({
+//       type: INDEXIMAGE_REQUEST
+//   })
+// }
+
 export default startPage;
