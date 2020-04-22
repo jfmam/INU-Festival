@@ -4,14 +4,11 @@ const path = require('path');
 const db = require('../models');
 const router = express.Router();
 
-router.get('/',async(req,res,next)=>{
+router.get('/:code',async(req,res,next)=>{//부스 조회
     try{
-    const adminCode=await db.admin.findAll({
-        where:{code:req.params.code},
-        include:[{
-            models:db.Menu,
-              attributes: ['food', 'price','soldOut']
-        }]
+        
+    const adminCode=await db.Admin.findAll({
+        where:{code:req.params.code},  
     });
     if(adminCode) {res.json(adminCode)}
    
@@ -21,9 +18,10 @@ router.get('/',async(req,res,next)=>{
 }
 })
 
-router.post('/',async(req,res,next)=>{
+router.post('/',async(req,res,next)=>{//부스 등록
     try{
-        const adminCode=await db.admin.create({
+        const adminCode=await db.Admin.create({
+            boothName:req.body.boothName,
             opTimeOpen:req.body.opTimeOpen,
             opTimeClose:req.body.opTimeClose,
             full:req.body.full
@@ -31,16 +29,40 @@ router.post('/',async(req,res,next)=>{
         if(req.body.Menu){
             if(Array.isArray(req.body.menu)){
                   const menu = await Promise.all(req.body.Menu.map((item,index) => {
-          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut });
+          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut,AdminCode:req.body.code });
             }))
-            await newAdmin.addMenu(menu);
         }
     }
-        // const menuPost=await db.Menu.create({
-        //     food:req.
-        // })
+
     }catch(e){
         res.send(e);
     }
 })
+
+router.patch('/',async(req,res,next)=>{
+    try{
+        db.Admin.update({
+           boothName:req.body.boothName,
+            opTimeOpen:req.body.opTimeOpen,
+            opTimeClose:req.body.opTimeClose,
+            full:req.body.full
+        },{
+            where:{code:req.body.code}
+        })
+        await db.Menu.destroy({
+            where:{AdminCode:req.body.code}
+        })
+        if(req.body.menu){
+             if(Array.isArray(req.body.menu)){
+                  const menu = await Promise.all(req.body.Menu.map((item,index) => {
+          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut,AdminCode:req.body.code });
+            }))
+        
+        }
+        }
+    }catch(e){
+
+    }
+})
+
 module.exports = router;

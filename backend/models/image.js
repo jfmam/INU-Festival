@@ -11,8 +11,5 @@ module.exports = (sequelize, DataTypes) => {
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci',
     });
-    Image.associate = (db) => {
-        db.Image.hasMany(db.Menu);
-    };
     return Image;
 };

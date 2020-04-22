@@ -9,7 +9,7 @@ db.Admin = require('./admin')(sequelize, Sequelize);
 db.Menu = require('./menu')(sequelize, Sequelize);
 db.Image = require('./image')(sequelize, Sequelize);
 db.Timetable = require('./timetable')(sequelize, Sequelize);
-db.Schedule=require('./schedule')(sequelize, Sequelize);
+
 
 Object.keys(db).forEach(modelName => {
     if (db[modelName].associate) {

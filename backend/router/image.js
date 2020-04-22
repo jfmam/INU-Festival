@@ -5,7 +5,7 @@ const db = require('../models');
 const router = express.Router();
 
 
-router.post('/shuttle',async(req,res,next)=>{
+router.post('/shuttle',async(req,res,next)=>{//이미지 등록,multer사용
     try{
     const image=await db.Image.create({
         shuttle:req.body.shuttleImage
@@ -15,7 +15,7 @@ router.post('/shuttle',async(req,res,next)=>{
     res.send(e);
 }
 })
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {//이미지 등록,multer사용
     try{
     const image = await db.Image.create({
         lineUp:req.body.indexImage

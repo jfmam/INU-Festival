@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         soldOut:{
-            type: DataTypes.STRING,
+            type: DataTypes.BOOLEAN,
             allowNull: false
         }
 
