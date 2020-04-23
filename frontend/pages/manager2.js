@@ -17,6 +17,8 @@ const manager2=()=>{
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
     const [boothname,setBoothname]=useState('');
+    const [opTimeOpen,setopTimeOpen]=useState('');
+     const [opTimeClose,setopTimeClose]=useState('');
 
     const fBtn=useRef();
     const eBtn=useRef();
@@ -59,7 +61,9 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input onChange={(e)=>{
+                    e.preventDefault();
+                    setBoothname(e.target.value)}} value={boothname} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -68,11 +72,15 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input name="opTimeOpen"  type='text' placeholder='00 : 00' 
+                <input onChange={(e)=>{
+                    e.preventDefault();
+                    setopTimeOpen(e.target.value)}} value={opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input  name="opTimeClose"  type='text' placeholder='00 : 00' 
+                 <input onChange={(e)=>{
+                    e.preventDefault();
+                    setopTimeClose(e.target.value)}} value={opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>

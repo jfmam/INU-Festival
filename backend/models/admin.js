@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         boothName:{
              type:DataTypes.STRING,
-             allowNull: false,
         },
         opTimeOpen:{
             type:DataTypes.STRING
@@ -17,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         full:{
             type:DataTypes.BOOLEAN,
-            allowNull:false
         }
 
     }, {

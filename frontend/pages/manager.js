@@ -23,7 +23,6 @@ const manager=()=>{
     <div style={{textAlign:'center',marginTop:'12em'}}>
         <label>* 코드 문의: </label>
        <img style={{verticalAlign:'middle'}} src="group-4.jpg"/>
-       {/* 이미지에 VA를 주는데 왜 코드문의가올라올까 */}
     </div>
    </Fragment>
    )

@@ -4,13 +4,13 @@ const path = require('path');
 const db = require('../models');
 const router = express.Router();
 
-router.get('/:code',async(req,res,next)=>{//부스 조회
-    try{
-        
+router.get('/',async(req,res,next)=>{//부스 조회
+    try{            
     const adminCode=await db.Admin.findAll({
-        where:{code:req.params.code},  
+        where:{code:req.query.code},  //req.params...req.quary
     });
-    if(adminCode) {res.json(adminCode)}
+    console.log(adminCode)
+    res.json(adminCode)
    
 }catch(e){
     console.error(e);
@@ -20,20 +20,22 @@ router.get('/:code',async(req,res,next)=>{//부스 조회
 
 router.post('/',async(req,res,next)=>{//부스 등록
     try{
-        const adminCode=await db.Admin.create({
+        const newAdmin=await db.Admin.create({
+            code:req.body.code,//이부분 나중에 변경
             boothName:req.body.boothName,
             opTimeOpen:req.body.opTimeOpen,
             opTimeClose:req.body.opTimeClose,
             full:req.body.full
         })
-        if(req.body.Menu){
+        if(req.body.menu){
             if(Array.isArray(req.body.menu)){
-                  const menu = await Promise.all(req.body.Menu.map((item,index) => {
-          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut,AdminCode:req.body.code });
+                  const menu = await Promise.all(req.body.menu.map((item,index) => {
+          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut});
             }))
+            await newAdmin.addMenus(menu);
         }
+        res.status(200).send("등록성공")
     }
-
     }catch(e){
         res.send(e);
     }
@@ -41,7 +43,7 @@ router.post('/',async(req,res,next)=>{//부스 등록
 
 router.patch('/',async(req,res,next)=>{
     try{
-        db.Admin.update({
+        const updateAdmin=db.Admin.update({
            boothName:req.body.boothName,
             opTimeOpen:req.body.opTimeOpen,
             opTimeClose:req.body.opTimeClose,
@@ -49,17 +51,18 @@ router.patch('/',async(req,res,next)=>{
         },{
             where:{code:req.body.code}
         })
-        await db.Menu.destroy({
+        await db.Menu.delete({//destroy는 단순히 관계파괴인가...
             where:{AdminCode:req.body.code}
         })
         if(req.body.menu){
              if(Array.isArray(req.body.menu)){
-                  const menu = await Promise.all(req.body.Menu.map((item,index) => {
-          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut,AdminCode:req.body.code });
+                  const menu = await Promise.all(req.body.menu.map((item,index) => {
+          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut});
             }))
-        
+            await updateAdmin.addMenus(menu);
         }
         }
+        res.status(200).send("변경성공")
     }catch(e){
 
     }
