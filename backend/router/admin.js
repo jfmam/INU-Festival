@@ -4,6 +4,21 @@ const path = require('path');
 const db = require('../models');
 const router = express.Router();
 
+
+router.get('/boothmap', async (req, res, next) => { //부스 조회
+    try {
+        const adminCode = await db.Admin.findAll({
+            where:{}
+        });
+        console.log(adminCode)
+        res.json(adminCode)
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+})
+
 router.get('/',async(req,res,next)=>{//부스 조회
     try{            
     const adminCode=await db.Admin.findAll({
