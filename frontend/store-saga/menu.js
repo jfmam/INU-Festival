@@ -35,7 +35,8 @@ function* loadCode(action){
     try{
     const result=yield call(loadCodeAPI,action.data);
     yield put({
-        type:CODE_SUCCESS
+        type:CODE_SUCCESS,
+        data:result.data
         //code정보를 보내줘야하나? code를 보내주면 한번에 정보를 보내줘야하지않을까?
     })
     }catch(e){

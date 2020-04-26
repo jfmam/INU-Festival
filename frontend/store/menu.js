@@ -16,10 +16,11 @@ export const CODE_FAILURE = 'FRONT/CODE_FAILURE'
 export const initialState={
    menuPostRequest:false,
    menuGetRequest:false,
-   menuInfo:{},
+   menuInfo:{},//메뉴등록정보
    menuPostError:{},
    menuGetError:{},
    codeRequest:false,
+   codeInfo:null, //코드조회정보
    codeError:{}
 }
 
@@ -68,6 +69,7 @@ export default (state=initialState,action)=>{
            }
              case CODE_SUCCESS:{
                draft.codeRequest=false; 
+               draft.codeInfo=action.data;
                break;
            }
              case CODE_REQUEST:{

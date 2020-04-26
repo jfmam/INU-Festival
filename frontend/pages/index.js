@@ -12,7 +12,7 @@ const startPage=()=>{
   },[])
     return(
         <>
-          <img style={{width:'100%',height:'38em'}} src="/dummyImage.png"></img>
+          <img style={{width:'100%',height:'38rem'}} src="/dummyImage.png"></img>
         </>
     )
 }

@@ -1,69 +1,89 @@
 import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
-
+import {useSelector, useDispatch} from 'react-redux'
+import {useRouter} from 'next/router'
 
 const Input=styled.input`
     border:'none'
     backgroundColor='#f0f0f0'
 `
 
+export const useInput = (initValue = null) => {
+  const [value, setter] = useState(initValue);
+  const handler = useCallback((e) => {
+    setter(e.target.value);
+  }, []);
+  return [value, handler];
+};
+
 const manager2=()=>{
     // let Menu=new Array(10).fill({food:'',price:'',soldOut:true});
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
-    const [fullBtn,setFullBtn]=useState(false);
+    const [Btn,setBtn]=useState(false);
     const [emptyBtn,setEmptyBtn]=useState(false);
     const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
-    const [boothname,setBoothname]=useState('');
-    const [opTimeOpen,setopTimeOpen]=useState('');
-     const [opTimeClose,setopTimeClose]=useState('');
+    
+    const [boothname,setBoothname]=useInput('');
+    const [opTimeOpen,setopTimeOpen]=useInput('');
+    const [opTimeClose,setopTimeClose]=useInput('');
 
+    const {codeInfo}=useSelector(state=>state.menu)
+    
+    
+    const router=useRouter();
+    const dispatch=useDispatch(); 
     const fBtn=useRef();
     const eBtn=useRef();
-    // function changeButton(){
-        
-    // }
+    
+    const changeButton=useCallback((e)=>{
+      e.preventDefault();
+    Btn?setBtn(false):setBtn(true);
 
-    const submitBooth=()=>{
-
-    }
-
-    if(emptyBtn){
+    if(!Btn){
         eBtn.current.style.borderColor="#64a5ff"
         eBtn.current.style.color='#64a5ff'
         fBtn.current.style.borderColor = "#333"
         fBtn.current.style.color = '#333'
     }
-    if (fullBtn) {
+   else {
         fBtn.current.style.borderColor = "#f00"
         fBtn.current.style.color = '#f00'
         eBtn.current.style.borderColor = "#333"
         eBtn.current.style.color = '#333'
     }
-  
-    //  const switchSoldOut=useCallback((index)=>{
-    //      Menu[index].soldOut ? Menu[index].soldOut = false : Menu[index].soldOut=true;
-    //  },[Menu])
+     },[Btn])
+     const onSubmitForm=useCallback(()=>{
+        dispatch({
+            code:codeInfo,
+            boothName:boothname,
+            opTimeOpen,
+            opTimeClose,
+            full:Btn,
+            menu:Menu
+        })
+     },[boothname,opTimeOpen,opTimeClose,Btn,Menu])
+
     const addTable=useCallback(()=>{
         setRows([...rows,1])
     },[rows])
 
 
-    useEffect(()=>{
-        console.log(Menu)
-    },[Menu])
+    // useEffect(()=>{
+    //     if(!codeInfo){ 
+    //         alert('잘못 된 코드를 입력하셨습니다.')
+    //         router.push('/manager')}
+    // },[codeInfo])
     return(
         <>
-        <form onSubmit={()=>{submitBooth}}>
+        <form onSubmit={onSubmitForm}>
             <div style={{marginTop:'2em',marginBottom:'2.7em'}}>
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input onChange={(e)=>{
-                    e.preventDefault();
-                    setBoothname(e.target.value)}} value={boothname} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input onChange={setBoothname} value={boothname} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -72,15 +92,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input onChange={(e)=>{
-                    e.preventDefault();
-                    setopTimeOpen(e.target.value)}} value={opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
+                <input onChange={setopTimeOpen} value={opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input onChange={(e)=>{
-                    e.preventDefault();
-                    setopTimeClose(e.target.value)}} value={opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
+                 <input onChange={setopTimeClose} value={opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>
@@ -89,16 +105,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={(e)=>{
-                    e.preventDefault();
-                    setFullBtn(true);setEmptyBtn(false)}}
+                <button type='button' title='만석' ref={fBtn} onClick={changeButton}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
-
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={(e)=>{
-                     e.preventDefault();
-                     setEmptyBtn(true);setFullBtn(false)}} defaultChecked={true}
+                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={true}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>
@@ -171,4 +182,6 @@ const manager2=()=>{
         </>
     )
 }   
+
+
 export default manager2;

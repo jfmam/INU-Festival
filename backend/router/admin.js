@@ -19,10 +19,11 @@ router.get('/boothmap', async (req, res, next) => { //부스 조회
     }
 })
 
-router.get('/',async(req,res,next)=>{//부스 조회
+router.get('/',async(req,res,next)=>{//부스 조회 api/admin
     try{            
     const adminCode=await db.Admin.findAll({
         where:{code:req.query.code},  //req.params...req.quary
+        attributes:['code']
     });
     console.log(adminCode)
     res.json(adminCode)
