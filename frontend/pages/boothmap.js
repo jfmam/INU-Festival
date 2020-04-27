@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef, Fragment} from "react";
 import styled from 'styled-components'
+import {useDispatch} from 'react-redux'
 
 const OriginMarker=styled.img`
     position:absolute;
@@ -43,6 +44,9 @@ const Boothmap=()=>{
 
     const backgroundImage=useRef();
     const boothMap=useRef();
+
+    const {allBoothInfo}=useSelector(state=>state.menu)
+
 
     const markerClick=useCallback(()=>{
         setToggle(true);
@@ -93,5 +97,11 @@ const Boothmap=()=>{
          </>
     )
 }
+
+// Boothmap.getInitialProps=async(context)=>{
+//     Boothmap.store.dispatch({
+//         type:GETALLBOOTHINFO_REQUEST
+//     })
+// }
 
 export default Boothmap;

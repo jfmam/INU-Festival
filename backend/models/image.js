@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
        lineUp:{
            type:DataTypes.STRING
        }
-
     }, {
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci',

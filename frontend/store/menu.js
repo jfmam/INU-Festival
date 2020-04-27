@@ -12,6 +12,9 @@ export const CODE_REQUEST = 'FRONT/CODE_REQUEST'
 export const CODE_SUCCESS = 'FRONT/CODE_SUCCESS'
 export const CODE_FAILURE = 'FRONT/CODE_FAILURE'
 
+export const GETALLBOOTHINFO_REQUEST = 'FRONT/GETALLBOOTHINFO_REQUEST'
+export const GETALLBOOTHINFO_SUCCESS = 'FRONT/GETALLBOOTHINFO_SUCCESS'
+export const GETALLBOOTHINFO_FAILURE = 'FRONT/GETALLBOOTHINFO_FAILURE'
 
 export const initialState={
    menuPostRequest:false,
@@ -21,7 +24,10 @@ export const initialState={
    menuGetError:{},
    codeRequest:false,
    codeInfo:null, //코드조회정보
-   codeError:{}
+   codeError:{},
+   boothRequst:false,
+   boothError:'',
+   allBoothInfo:{}
 }
 
 
@@ -57,7 +63,7 @@ export default (state=initialState,action)=>{
                draft.menuInfo=action.data; 
                break;
            }
-             case MENUGET_REQUEST:{
+             case MENUGET_FAILURE:{
                draft.menuGetRequest=false;
                draft.menuGetError=action.error 
                break;
@@ -72,9 +78,25 @@ export default (state=initialState,action)=>{
                draft.codeInfo=action.data;
                break;
            }
-             case CODE_REQUEST:{
+             case CODE_FAILURE:{
                draft.codeRequest=false;
                draft.codeError=action.error 
+               break;
+           }
+               case GETALLBOOTHINFO_REQUEST:{
+               draft.boothRequest=true;
+               draft.boothError=''; 
+               allBoothInfo={};
+               break;
+           }
+             case GETALLBOOTHINFO_SUCCESS:{
+               draft.boothRequest=false; 
+               draft.allBoothInfo=action.data;
+               break;
+           }
+             case GETALLBOOTHINFO_FAILURE:{
+               draft.bootheRequest=false;
+               draft.boothError=action.error 
                break;
            }
            default:{
