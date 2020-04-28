@@ -3,7 +3,10 @@ module.exports = (sequelize, DataTypes) => {
         scheduleDate:{
             type:DataTypes.STRING,
              allowNull:false     
-        }, 
+        },
+        time:{
+            type:DataTypes.STRING
+        },
         schedule: {
             type: DataTypes.STRING
         }

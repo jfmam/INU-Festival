@@ -19,33 +19,28 @@ router.post('/',async(req,res,next)=>{//일정등록하기
     }
 })
 
-router.get('/',async (req,res,next)=>{
+router.get('/date', async (req, res, next) => {
     try {
-        const date=await db.Timetable.findAll({//타임테이블 일 보여주기
-            attributes: [Sequelize.fn('DISTINCT', Sequelize.col('scheduleDate')), 'scheduleDate']     
-        })
-        res.json(date);
+        const dateSchedule = await db.Timetable.aggregate( //타임테이블 일 보여주기
+            'scheduleDate',
+            'DISTINCT',
+            {plain:false}
+        )
+        res.json(dateSchedule);
     } catch (e) {
         res.send(e);
     }
 })
 
-router.get('/:date', async (req, res, next) => {//타임테이블 일별로 일정보여주기
-    try{
-    const schedule = await db.Timetable.findAll({
-    where:{
-             scheduleDate: {
-                   [Op.like]: "%" + req.query.date + "%"
-                }
-            },
-    include:[{
-        model:db.Schedule,
-        attributes:'schedule'
-    }]
-    })
-    res.json(schedule);
-}catch(e){
-    console.error(e);
-}
+router.get('/',async (req,res,next)=>{
+    try {
+        const dateSchedule=await db.Timetable.findAll({//타임테이블 일 보여주기
+        where:{}
+        }) 
+        res.json(dateSchedule);
+    } catch (e) {
+        res.send(e);
+    }
 })
+
 module.exports = router;

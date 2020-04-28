@@ -2,35 +2,53 @@ import React, { useCallback, useState,useRef, Children } from 'react'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 import { SCHEDULEGET_REQUEST } from '../store/timetable'
-
+import {} from 'react-slick'
 
 const TimeTable=({children})=>{
-    const [dummydate,setDummyDate]=useState([{Date:'28월'},{Date:'29화'},{Date:'30수'},{Date:'31목'}])
-    const {scheduleInfo}=useSelector(state=>state.timetable)
+    const [date,setDate]=useState(null)
+    const [schedule,setSchedule]=useState([])
+    const {scheduleInfo,dateInfo}=useSelector(state=>state.timetable)
     const dispatch=useDispatch();
+
+    const filterSchedule=useCallback((e)=>{
+        setSchedule(scheduleInfo.filter((item,index)=>{
+            return item.scheduleDate===e.target.textContent
+        }))
+    },[schedule])
+   
  return (
     
     <> 
      <nav style={{display:'flex',justifyContent:'space-around',borderBottom:'1px solid gray',marginTop:'3rem'
     ,paddingBottom:'1.38rem'
     }}>
-    {dummydate.map((item,index)=>{
+    {dateInfo.map((item,index)=>{
         return(
-        <Link  href={{pathname:`/timetable/[timetable]`}} as={`/timetable/${item.Date.slice(0,2)}`}  key={index}>
-           <a onClick={()=>{
-               dispatch({
-               type:SCHEDULEGET_REQUEST,
-               data:item.Date.slice(0,2)
-           })}}><strong>{item.Date}</strong></a> 
-        </Link>
+        <strong onClick={filterSchedule} key={index}>{item.DISTINCT}</strong>
         )
     })}
      </nav>
-     <section>
-      {children}
-     </section>
+     <main>
+         {schedule&&schedule.map((item,index)=>{
+             return(
+             <div style={{padding:'1rem',borderBottom:'1px solid #979797',fontSize:16}}>
+             <span style={{margin:'2.3rem'}}><strong>{item.time}</strong></span>
+             <span style={{margin:'1.88rem'}}>{item.schedule}</span>
+             </div>
+             )
+         })}
+     </main>
      </>
  )
+}
+
+TimeTable.getInitialProps=async(context)=>{
+    context.store.dispatch({
+        type:DATEGET_REQUEST
+    })
+    context.store.dispatch({
+        type:SCHEDULEGET_REQUEST
+    })
 }
 
 export default TimeTable;

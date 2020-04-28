@@ -7,11 +7,15 @@ const router = express.Router();
 
 router.get('/boothmap', async (req, res, next) => { //부스 조회
     try {
-        const adminCode = await db.Admin.findAll({
-            where:{}
+        const boothInfo = await db.Admin.findAll({
+            where:{},
+            include:[{
+                model:db.Menu,
+                attributes:['food','price','soldOut']
+            }]
         });
-        console.log(adminCode)
-        res.json(adminCode)
+        console.log(boothInfo)
+        res.json(boothInfo)
 
     } catch (e) {
         console.error(e);

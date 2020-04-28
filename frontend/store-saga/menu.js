@@ -1,6 +1,8 @@
 import { takeLatest,call,all,fork,put } from 'redux-saga/effects'
 import axios from 'axios'
-import  { CODE_REQUEST, CODE_SUCCESS, CODE_FAILURE, MENUPOST_REQUEST, MENUPOST_FAILURE, MENUPOST_SUCCESS } from '../store/menu'
+import  { CODE_REQUEST, CODE_SUCCESS, CODE_FAILURE, MENUPOST_REQUEST, MENUPOST_FAILURE, MENUPOST_SUCCESS,
+    GETALLBOOTHINFO_REQUEST,GETALLBOOTHINFO_SUCCESS,
+    GETALLBOOTHINFO_FAILURE } from '../store/menu'
 
 
 function PostMenuAPI(menuData){
@@ -50,11 +52,35 @@ function* loadCode(action){
 function* watchCode() {
   yield takeLatest(CODE_REQUEST,loadCode);
 }
+
+function loadBoothAPI(){
+ return axios.get('/boothmap',{});
+}
+
+function* loadBoothInfo(action){
+    try{
+    const result=yield call(loadBoothAPI);
+    yield put({
+        type:GETALLBOOTHINFO_SUCCESS,
+        data:result.data
+    })
+    }catch(e){
+        yield put({
+        type:GETALLBOOTHINFO_FAILURE,
+        error:e
+        })
+    }
+}
+
+function* watchAllBoothInfo() {
+  yield takeLatest(GETALLBOOTHINFO_REQUEST,loadBoothInfo);
+}
  
 export default function* menuSaga(){
     yield all([
         fork(watchPostMenu),
         //fork(watchLoadMenu),
-        fork(watchCode)
+        fork(watchCode),
+        fork(watchAllBoothInfo)
     ])
 }

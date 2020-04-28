@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useCallback, useRef, Fragment} from "react";
 import styled from 'styled-components'
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
+import * as position from '../components/position'
 
 const OriginMarker=styled.img`
     position:absolute;
-    left:35%;
-    top:17rem
+    left:${props=>props.left};
+    top:${props=>props.top};
 `
 const ClickMarker=styled.img`
     position:absolute;
-    left:32%;
+    left:${props=>`calc(32%- 10px)`}};
     top:13.5rem
 `
 const OverLay=styled.div`
@@ -40,7 +41,9 @@ margin-top:11.6rem;
 const Boothmap=()=>{
     const [toggle,setToggle]=useState(false)
     const [detail,setDetail]=useState(false)
-    const [markerPosition,setMarkerPosition]=useState([])
+    const [markerPosition,setMarkerPosition]=useState([{code:1,left:position.CONS8_7_6_5_RIGHT,top:position.TOP2}])
+    const [boothInfo,setBoothInfo]=useState();
+    //marker에 모두 code를 부여해준다.code를 부여해준다음에
 
     const backgroundImage=useRef();
     const boothMap=useRef();
@@ -48,13 +51,15 @@ const Boothmap=()=>{
     const {allBoothInfo}=useSelector(state=>state.menu)
 
 
-    const markerClick=useCallback(()=>{
+    const markerClick=useCallback(element=>()=>{
         setToggle(true);
         backgroundImage.current.style.height='32rem'
+        setBoothInfo(allBoothInfo.filter((item,index)=>item.code===element.code));
     },[toggle])
       const markerUnClick=useCallback(()=>{
         setToggle(false);
         backgroundImage.current.style.height='38rem'
+         setBoothInfo(null);
     },[toggle])
     const more=useCallback(()=>{
        setDetail(true);
@@ -68,22 +73,24 @@ const Boothmap=()=>{
             <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'38rem'}}/>
             {toggle?
             <Fragment>
-            <ClickMarker src='/clickShape.png' onClick={markerUnClick}/>
-                <div  style={{marginTop:24}}>
+            {markerPosition.map((item,index)=>{return <ClickMarker left={item.left} top={item.top} src='/clickShape.png' onClick={markerUnClick}/>})} 
+               <div style={{marginTop:24}}>  
                     <div>
-                    <span style={{fontSize:15,color:"#003e94",marginLeft:'2rem'}}><strong>부스이름</strong></span>
-                    <span style={{float:'right',fontSize:15,color:"#333",marginRight:'2rem'}}>17:00~20:00</span>
+            <span style={{fontSize:15,color:"#003e94",marginLeft:'2rem'}}><strong>{boothInfo.boothName}</strong></span>
+            <span style={{float:'right',fontSize:15,color:"#333",marginRight:'2rem'}}>{`${boothInfo.opTimeOpen}~${boothInfo.opTimeClose}`}</span>
                     </div>
-               <div><label style={{float:'right',fontSize:13,color:'#f00',marginTop:8,marginRight:'2rem'}}>만석</label></div>
-              </div>
+            {boothInfo.full&&<div><label style={{float:'right',fontSize:13,color:'#f00',marginTop:8,marginRight:'2rem'}}>만석</label></div>}   
+               </div>}
                  {detail?   
                  <OverLay>
                     <Modal>
                        <img style={{float:'right',margin:15}} src='/xbtn.png' onClick={closeBtn}/>
+                    {
+                    boothInfo.Menus&&   
                     <div style={{clear:'both'}}>
                         부스정보
                     </div>
-
+                    }   
                     </Modal>  
                  </OverLay>
                 :
@@ -92,14 +99,16 @@ const Boothmap=()=>{
                  </div> 
                  }
             </Fragment> 
-                :<OriginMarker src='/shape.png' onClick={markerClick}/>  
+                :markerPosition.map((item,index)=>{return (
+                <OriginMarker left={item.left} top={item.top} src='/shape.png' onClick={markerClick(item)}/>) 
+             }) 
         }
          </>
     )
 }
 
 // Boothmap.getInitialProps=async(context)=>{
-//     Boothmap.store.dispatch({
+//     context.store.dispatch({
 //         type:GETALLBOOTHINFO_REQUEST
 //     })
 // }
