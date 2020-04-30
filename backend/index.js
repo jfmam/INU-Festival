@@ -13,9 +13,9 @@ const prod = process.env.NODE_ENV === 'production';
 db.sequelize.sync();
 
 
-
+app.use(cors());
+app.use(morgan('dev'));
 app.use(express.json())
-
 app.use(express.urlencoded({
     extended: true
 }));

@@ -19,7 +19,7 @@ export const GETALLBOOTHINFO_FAILURE = 'FRONT/GETALLBOOTHINFO_FAILURE'
 export const initialState={
    menuPostRequest:false,
    menuGetRequest:false,
-   menuInfo:{},//메뉴등록정보
+   menuInfo:null,//메뉴등록정보
    menuPostError:{},
    menuGetError:{},
    codeRequest:false,
@@ -27,7 +27,8 @@ export const initialState={
    codeError:{},
    boothRequst:false,
    boothError:'',
-   allBoothInfo:{}
+   allBoothInfo:{},
+   postSuccess:null
 }
 
 
@@ -43,7 +44,8 @@ export default (state=initialState,action)=>{
                break;
            }
              case MENUPOST_SUCCESS:{
-               draft.menuPostRequest=false; 
+               draft.menuPostRequest=false;
+               draft.postSuccess=action.data
                break;
              
            }
@@ -70,7 +72,8 @@ export default (state=initialState,action)=>{
            }
             case CODE_REQUEST:{
                draft.codeRequest=true;
-               draft.codeError='' 
+               draft.codeError='';
+               draft.codeInfo=null 
                break;
            }
              case CODE_SUCCESS:{

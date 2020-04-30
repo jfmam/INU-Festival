@@ -1,6 +1,6 @@
 import {takeLatest,call,all,fork,put } from 'redux-saga/effects'
 import axios from 'axios'
-import  {SCHEDULEGET_REQUEST,SCHEDULEGET_SUCCESS,SCHEDULEGET_FAILURE} from '../store/timetable'
+import  {SCHEDULEGET_REQUEST,SCHEDULEGET_SUCCESS,SCHEDULEGET_FAILURE,DATEGET_REQUEST,DATEGET_SUCCESS,DATEGET_FAILURE} from '../store/timetable'
 
 
 
@@ -57,6 +57,6 @@ function* watchLoadDate() {
 export default function* timetableSaga(){
     yield all([
         fork(watchLoadSchedule),
-        fork(watchloadDate)
+        fork(watchLoadDate)
     ])
 }

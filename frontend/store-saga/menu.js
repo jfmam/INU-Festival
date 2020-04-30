@@ -6,6 +6,7 @@ import  { CODE_REQUEST, CODE_SUCCESS, CODE_FAILURE, MENUPOST_REQUEST, MENUPOST_F
 
 
 function PostMenuAPI(menuData){
+    console.log(menuData)
  return axios.post('/admin',menuData);
 }
 
@@ -15,7 +16,6 @@ function* PostMenu(action){
     yield put({
         type:MENUPOST_SUCCESS,
         data:result.data
-        //code정보를 보내줘야하나? code를 보내주면 한번에 정보를 보내줘야하지않을까?
     })
     }catch(e){
         yield put({
@@ -30,7 +30,7 @@ function* watchPostMenu() {
 }
 
 function loadCodeAPI(Code){
- return axios.get('/admin',Code);
+ return axios.get(`/admin/${Code}`);
 }
 
 function* loadCode(action){

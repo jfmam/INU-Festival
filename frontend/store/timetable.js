@@ -24,27 +24,33 @@ export default (state=initialState,action)=>{
                 draft.scheduleRequest=true;
                 draft.scheduleError='';
                 draft.scheduleInfo='';
+                break;
             }
             case SCHEDULEGET_SUCCESS:{
                 draft.scheduleRequest=false;
                 draft.scheduleInfo=action.data;
+                break;
             }
             case SCHEDULEGET_FAILURE:{
                 draft.scheduleRequest=false;
                 draft.scheduleError=action.error
+                break;
             }
                case DATEGET_REQUEST:{
                 draft.dateRequest=true;
                 draft.dateError='';
                 draft.dateInfo='';
+                break;
             }
             case DATEGET_SUCCESS:{
                 draft.dateRequest=false;
                 draft.dateInfo=action.data;
+                console.log(dateInfo)
             }
             case DATEGET_FAILURE:{
                 draft.dateRequest=false;
                 draft.dateError=action.error
+                break;
             }
             default:{
                 return state

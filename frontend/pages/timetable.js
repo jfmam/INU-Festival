@@ -1,7 +1,7 @@
 import React, { useCallback, useState,useRef, Children } from 'react'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
-import { SCHEDULEGET_REQUEST } from '../store/timetable'
+import { SCHEDULEGET_REQUEST,DATEGET_REQUEST } from '../store/timetable'
 import {} from 'react-slick'
 
 const TimeTable=({children})=>{
@@ -22,7 +22,7 @@ const TimeTable=({children})=>{
      <nav style={{display:'flex',justifyContent:'space-around',borderBottom:'1px solid gray',marginTop:'3rem'
     ,paddingBottom:'1.38rem'
     }}>
-    {dateInfo.map((item,index)=>{
+    {dateInfo&&dateInfo.map((item,index)=>{
         return(
         <strong onClick={filterSchedule} key={index}>{item.DISTINCT}</strong>
         )

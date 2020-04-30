@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react
 import styled from 'styled-components'
 import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
+import {MENUPOST_REQUEST} from '../store/menu';
 
 const Input=styled.input`
     border:'none'
@@ -17,7 +18,7 @@ export const useInput = (initValue = null) => {
 };
 
 const manager2=()=>{
-    // let Menu=new Array(10).fill({food:'',price:'',soldOut:true});
+
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
     const [Btn,setBtn]=useState(false);
@@ -29,15 +30,19 @@ const manager2=()=>{
     const [boothname,setBoothname]=useInput('');
     const [opTimeOpen,setopTimeOpen]=useInput('');
     const [opTimeClose,setopTimeClose]=useInput('');
+    const [code,useCode]=useState(null);
 
-    const {codeInfo}=useSelector(state=>state.menu)
-    
-    
     const router=useRouter();
     const dispatch=useDispatch(); 
     const fBtn=useRef();
     const eBtn=useRef();
+    const {postSuccess,codeInfo}=useSelector(state=>state.menu);
     
+    if(postSuccess){
+        alert("등록성공");
+        router.push('/manager')
+    }
+
     const changeButton=useCallback((e)=>{
       e.preventDefault();
     Btn?setBtn(false):setBtn(true);
@@ -56,13 +61,17 @@ const manager2=()=>{
     }
      },[Btn])
      const onSubmitForm=useCallback(()=>{
+         console.log("전송")
         dispatch({
+            type:MENUPOST_REQUEST,
+            data:{
             code:codeInfo,
             boothName:boothname,
             opTimeOpen,
             opTimeClose,
             full:Btn,
             menu:Menu
+            }
         })
      },[boothname,opTimeOpen,opTimeClose,Btn,Menu])
 
@@ -70,12 +79,13 @@ const manager2=()=>{
         setRows([...rows,1])
     },[rows])
 
-
-    // useEffect(()=>{
-    //     if(!codeInfo){ 
-    //         alert('잘못 된 코드를 입력하셨습니다.')
-    //         router.push('/manager')}
-    // },[codeInfo])
+    useEffect(()=>{
+        if(!codeInfo){
+            console.log(codeInfo);
+            alert('잘못 된 코드를 입력하였습니다');
+            router.push({pathname:'/manager'});
+        }
+    },[codeInfo])
     return(
         <>
         <form onSubmit={onSubmitForm}>
@@ -135,7 +145,7 @@ const manager2=()=>{
                                 {cols.fill(cols.length).map((ele,i)=>{
                                   return( 
                                 <Fragment>
-                             <td contentEditable={true} onKeyUp={
+                             <td suppressContentEditableWarning={true} contentEditable={true} onKeyUp={
                                  (e)=>{
                                      i===0?setMenu(
                                          Menu.map((v,ind)=>{return ind===index?Object.assign(v,{food:e.target.textContent}) :v})
@@ -175,10 +185,10 @@ const manager2=()=>{
                       e.preventDefault()
                       addTable()}}>+추가하기</label>
             </div>
-        </form>
-        <footer style={{textAlign:'center'}}>
-            <img src='group.png'/>
+              <footer style={{textAlign:'center'}}>
+            <img onClick={onSubmitForm} src='group.png'/>
         </footer>
+        </form>
         </>
     )
 }   
