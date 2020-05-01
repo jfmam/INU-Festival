@@ -54,7 +54,7 @@ function* watchCode() {
 }
 
 function loadBoothAPI(){
- return axios.get('/boothmap',{});
+ return axios.get('/admin/boothmap',{});
 }
 
 function* loadBoothInfo(action){
@@ -75,11 +75,11 @@ function* loadBoothInfo(action){
 function* watchAllBoothInfo() {
   yield takeLatest(GETALLBOOTHINFO_REQUEST,loadBoothInfo);
 }
+
  
 export default function* menuSaga(){
     yield all([
         fork(watchPostMenu),
-        //fork(watchLoadMenu),
         fork(watchCode),
         fork(watchAllBoothInfo)
     ])

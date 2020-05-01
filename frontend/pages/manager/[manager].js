@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react
 import styled from 'styled-components'
 import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
-import {MENUPOST_REQUEST} from '../store/menu';
+import {MENUPOST_REQUEST} from '../../store/menu';
 
 const Input=styled.input`
     border:'none'
@@ -17,8 +17,7 @@ export const useInput = (initValue = null) => {
   return [value, handler];
 };
 
-const manager2=()=>{
-
+const manager2=({menuInfo})=>{
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
     const [Btn,setBtn]=useState(false);
@@ -26,23 +25,16 @@ const manager2=()=>{
     const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
-    
+    const [toggle,setToggle]=useState(false);
     const [boothname,setBoothname]=useInput('');
     const [opTimeOpen,setopTimeOpen]=useInput('');
     const [opTimeClose,setopTimeClose]=useInput('');
-    const [code,useCode]=useState(null);
 
     const router=useRouter();
     const dispatch=useDispatch(); 
     const fBtn=useRef();
     const eBtn=useRef();
-    const {postSuccess,codeInfo}=useSelector(state=>state.menu);
-    
-    if(postSuccess){
-        alert("등록성공");
-        router.push('/manager')
-    }
-
+    const {postSuccess,codeInfo,codeRequest}=useSelector(state=>state.menu);
     const changeButton=useCallback((e)=>{
       e.preventDefault();
     Btn?setBtn(false):setBtn(true);
@@ -65,7 +57,7 @@ const manager2=()=>{
         dispatch({
             type:MENUPOST_REQUEST,
             data:{
-            code:codeInfo,
+            code:codeInfo.code,
             boothName:boothname,
             opTimeOpen,
             opTimeClose,
@@ -74,18 +66,18 @@ const manager2=()=>{
             }
         })
      },[boothname,opTimeOpen,opTimeClose,Btn,Menu])
-
     const addTable=useCallback(()=>{
         setRows([...rows,1])
-    },[rows])
+    },[rows]) 
+    if(postSuccess){
+        alert("등록성공");
+        router.push('/manager')
+    }
+    if(!codeInfo&&!codeRequest){
+        alert('잘못된 코드를 입력하셨습니다');
+        router.push('/manager')
+    }
 
-    useEffect(()=>{
-        if(!codeInfo){
-            console.log(codeInfo);
-            alert('잘못 된 코드를 입력하였습니다');
-            router.push({pathname:'/manager'});
-        }
-    },[codeInfo])
     return(
         <>
         <form onSubmit={onSubmitForm}>
@@ -93,7 +85,7 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input onChange={setBoothname} value={boothname} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input onChange={setBoothname} defaultValue={codeInfo&&codeInfo.boothName} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -102,11 +94,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input onChange={setopTimeOpen} value={opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
+                <input onChange={setopTimeOpen} defaultValue={codeInfo&&codeInfo.opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input onChange={setopTimeClose} value={opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
+                 <input onChange={setopTimeClose}  defaultValue={codeInfo&&codeInfo.opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>
@@ -115,11 +107,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={changeButton}
+                <button type='button' title='만석' ref={fBtn} onClick={changeButton} defaultChecked={codeInfo&&codeInfo.full}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={true}
+                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo&&!(codeInfo.full)}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>
@@ -145,29 +137,53 @@ const manager2=()=>{
                                 {cols.fill(cols.length).map((ele,i)=>{
                                   return( 
                                 <Fragment>
-                             <td suppressContentEditableWarning={true} contentEditable={true} onKeyUp={
+                             <td  suppressContentEditableWarning={true} contentEditable={true} onKeyUp={
                                  (e)=>{
                                      i===0?setMenu(
-                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{food:e.target.textContent}) :v})
+                                      Menu.map((v,ind)=>{return ind===index?Object.assign(v,{food:e.target.textContent}) :v})
                                      )
                                      :    
                                      setMenu(
-                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{price:e.target.textContent}) :v})
-                                     )               
+                                       Menu.map((v,ind)=>{return ind===index?Object.assign(v,{price:e.target.textContent}) :v})
+                                     )                                   
                                  }
                              } style={{border:'1px solid white'}}>
+
                              {
-                             i===2&&(Menu[index].soldOut===false?<img onClick={()=>{
-                                 setMenu(
-                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v})
-                                     )   
+                                 i===0&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
+                                 return j===index?<>{ele.food}</>:<></>
+                                 })}</>
+                             }  
+                                 {
+                                  i===1&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
+                                 return j===index?<>{ele.price}</>:<></>
+                                 })}</>
+                             }  
+                             { 
+                             i===2&&(codeInfo.Menus?codeInfo.Menus.map((ele,j)=>{
+                                return j===index&&((ele.soldOut||toggle)? 
+                                <img onClick={(e)=>{
+                                setToggle(false);
+                                setMenu(Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v}) )   
+                             }} src='/unreveal.png'/>
+                             :<img onClick={()=>{
+                                 setToggle(true);
+                                 setMenu(Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v}))   
                              }     
-                             } src='reveal.png'/>
-                             :<img onClick={(e)=>{
+                             } src='/reveal.png'/>)
+                             }):Menu[index].soldOut?<img onClick={(e)=>{
                                 setMenu(
-                                         Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v})
+                                       Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v})
                                      )   
-                             }} src='unreveal.png'/>)}    
+                             }} src='/unreveal.png'/>
+                             :<img onClick={()=>{
+                                 setMenu(
+                                    Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v})
+                                        )   
+                             }     
+                             } src='/reveal.png'/>)
+                             }    
+                             
                              </td>
                              </Fragment>
                                   )
@@ -186,7 +202,7 @@ const manager2=()=>{
                       addTable()}}>+추가하기</label>
             </div>
               <footer style={{textAlign:'center'}}>
-            <img onClick={onSubmitForm} src='group.png'/>
+            <img onClick={onSubmitForm} src='/group.png'/>
         </footer>
         </form>
         </>

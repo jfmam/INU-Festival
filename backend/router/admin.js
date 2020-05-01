@@ -27,7 +27,10 @@ router.get('/:code',async(req,res,next)=>{//부스 조회 api/admin
     try{          
     const adminCode=await db.Admin.findOne({
         where:{code:req.params.code},  
-        attributes:['code']
+       include:[{
+           model:db.Menu,
+           attributes:['food','price','soldOut']
+       }]
     });
     res.status(200).json(adminCode)
    

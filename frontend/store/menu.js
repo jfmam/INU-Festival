@@ -27,7 +27,7 @@ export const initialState={
    codeError:{},
    boothRequst:false,
    boothError:'',
-   allBoothInfo:{},
+   allBoothInfo:null,
    postSuccess:null
 }
 
@@ -89,7 +89,6 @@ export default (state=initialState,action)=>{
                case GETALLBOOTHINFO_REQUEST:{
                draft.boothRequest=true;
                draft.boothError=''; 
-               allBoothInfo={};
                break;
            }
              case GETALLBOOTHINFO_SUCCESS:{

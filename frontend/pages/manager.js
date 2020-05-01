@@ -15,7 +15,7 @@ const manager=()=>{
     },[code])
     const inputEL=useRef(null)
     const router=useRouter();
-    const {codeInfo}=useSelector(state=>state.menu)
+    const {codeInfo,codeRequest}=useSelector(state=>state.menu)
     
     const codeDispatch=useCallback(async(resolve,reject)=>{
             return await new Promise((resolve,reject)=>{
@@ -33,9 +33,7 @@ const manager=()=>{
             return;
         }
         await codeDispatch().then(()=>{
-            if(codeInfo){
-            router.push('/manager2');
-        }
+            router.push('/manager/[manager]',`/manager/${code}`);
         })
 
     },[code])
