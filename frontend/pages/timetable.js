@@ -9,12 +9,11 @@ const TimeTable=({children})=>{
     const [schedule,setSchedule]=useState([])
     const {scheduleInfo,dateInfo}=useSelector(state=>state.timetable)
     const dispatch=useDispatch();
-
     const filterSchedule=useCallback((e)=>{
         setSchedule(scheduleInfo.filter((item,index)=>{
             return item.scheduleDate===e.target.textContent
         }))
-    },[schedule])
+    },[schedule,scheduleInfo])
    
  return (
     

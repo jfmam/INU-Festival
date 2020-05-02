@@ -45,7 +45,6 @@ export default (state=initialState,action)=>{
             case DATEGET_SUCCESS:{
                 draft.dateRequest=false;
                 draft.dateInfo=action.data;
-                console.log(dateInfo)
             }
             case DATEGET_FAILURE:{
                 draft.dateRequest=false;

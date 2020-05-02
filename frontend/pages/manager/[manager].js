@@ -17,7 +17,8 @@ export const useInput = (initValue = null) => {
   return [value, handler];
 };
 
-const manager2=({menuInfo})=>{
+const manager2=(props)=>{
+    console.log(props);
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
     const [Btn,setBtn]=useState(false);
@@ -53,19 +54,20 @@ const manager2=({menuInfo})=>{
     }
      },[Btn])
      const onSubmitForm=useCallback(()=>{
-         console.log("전송")
-        dispatch({
-            type:MENUPOST_REQUEST,
-            data:{
-            code:codeInfo.code,
-            boothName:boothname,
-            opTimeOpen,
-            opTimeClose,
-            full:Btn,
-            menu:Menu
-            }
-        })
-     },[boothname,opTimeOpen,opTimeClose,Btn,Menu])
+         console.log("전송");
+         console.log(Menu);
+        // dispatch({
+        //     type:MENUPOST_REQUEST,
+        //     data:{
+        //     code:codeInfo.code,
+        //     boothName:boothname,
+        //     opTimeOpen,
+        //     opTimeClose,
+        //     full:Btn,
+        //     menu:Menu
+        //     }
+        // })
+     },[boothname,opTimeOpen,opTimeClose,Btn,Menu,codeInfo])
     const addTable=useCallback(()=>{
         setRows([...rows,1])
     },[rows]) 
@@ -73,10 +75,10 @@ const manager2=({menuInfo})=>{
         alert("등록성공");
         router.push('/manager')
     }
-    if(!codeInfo&&!codeRequest){
-        alert('잘못된 코드를 입력하셨습니다');
-        router.push('/manager')
-    }
+    // if(!codeInfo&&!codeRequest){
+    //     alert('잘못된 코드를 입력하셨습니다');
+    //     router.push('/manager')
+    // }
 
     return(
         <>
@@ -149,17 +151,17 @@ const manager2=({menuInfo})=>{
                                  }
                              } style={{border:'1px solid white'}}>
 
-                             {
-                                 i===0&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
+                             {/* {
+                                 i===0&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.food}</>:<></>
                                  })}</>
                              }  
                                  {
-                                  i===1&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
+                                  i===1&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.price}</>:<></>
                                  })}</>
-                             }  
-                             { 
+                             }   */}
+                             {/* { 
                              i===2&&(codeInfo.Menus?codeInfo.Menus.map((ele,j)=>{
                                 return j===index&&((ele.soldOut||toggle)? 
                                 <img onClick={(e)=>{
@@ -182,7 +184,7 @@ const manager2=({menuInfo})=>{
                                         )   
                              }     
                              } src='/reveal.png'/>)
-                             }    
+                             }     */}
                              
                              </td>
                              </Fragment>
@@ -209,5 +211,8 @@ const manager2=({menuInfo})=>{
     )
 }   
 
+manager2.getInitialProps=async(context)=>{
+    console.log(context.store.getState());
+}
 
 export default manager2;

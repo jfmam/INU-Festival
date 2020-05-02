@@ -32,12 +32,13 @@ const manager=()=>{
             alert('코드를 입력해주세요');
             return;
         }
-        await codeDispatch().then(()=>{
-            router.push('/manager/[manager]',`/manager/${code}`);
-        })
+        await codeDispatch()
 
     },[code])
 
+    useEffect(()=>{
+        if(codeInfo&&!codeRequest){router.push('/manager/[manager]',`/manager/${code}`);}
+    },[codeInfo,codeRequest])
    return( 
     <Fragment>
    <div style={{display:'block',textAlign:'center',marginTop:188}}>

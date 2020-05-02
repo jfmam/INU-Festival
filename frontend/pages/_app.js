@@ -25,9 +25,11 @@ const Home=({Component,store,pageProps})=>{
 
 Home.getInitialProps=async (context)=>{
   const {ctx}=context;
+
   let pageProps={};
   if(context.Component.getInitialProps){
     pageProps=await context.Component.getInitialProps(ctx);
+    console.log(pageProps);
   }
   return {pageProps};
 }
