@@ -17,8 +17,7 @@ export const useInput = (initValue = null) => {
   return [value, handler];
 };
 
-const manager2=(props)=>{
-    console.log(props);
+const manager2=()=>{
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
     const [Btn,setBtn]=useState(false);
@@ -75,10 +74,13 @@ const manager2=(props)=>{
         alert("등록성공");
         router.push('/manager')
     }
-    // if(!codeInfo&&!codeRequest){
-    //     alert('잘못된 코드를 입력하셨습니다');
-    //     router.push('/manager')
-    // }
+
+    useEffect(()=>{
+        codeInfo.Menus&&setMenu(Menu.map((item,index)=>{
+            return codeInfo.Menus[index]?Object.assign(item,codeInfo.Menus[index]):item;
+        }))
+        
+    },[])
 
     return(
         <>
@@ -87,7 +89,7 @@ const manager2=(props)=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input onChange={setBoothname} defaultValue={codeInfo&&codeInfo.boothName} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input onChange={setBoothname} defaultValue={codeInfo.boothName&&codeInfo.boothName} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -96,11 +98,11 @@ const manager2=(props)=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input onChange={setopTimeOpen} defaultValue={codeInfo&&codeInfo.opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
+                <input onChange={setopTimeOpen} defaultValue={codeInfo.opTimeOpen&&codeInfo.opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input onChange={setopTimeClose}  defaultValue={codeInfo&&codeInfo.opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
+                 <input onChange={setopTimeClose}  defaultValue={codeInfo.opTimeClose&&codeInfo.opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>
@@ -109,11 +111,11 @@ const manager2=(props)=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={changeButton} defaultChecked={codeInfo&&codeInfo.full}
+                <button type='button' title='만석' ref={fBtn} onClick={changeButton} defaultChecked={codeInfo.full&&codeInfo.full}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo&&!(codeInfo.full)}
+                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo.full&&!(codeInfo.full)}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>
@@ -151,40 +153,30 @@ const manager2=(props)=>{
                                  }
                              } style={{border:'1px solid white'}}>
 
-                             {/* {
+                             {
                                  i===0&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.food}</>:<></>
                                  })}</>
                              }  
-                                 {
-                                  i===1&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
+                             {
+                                 i===1&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.price}</>:<></>
                                  })}</>
-                             }   */}
-                             {/* { 
-                             i===2&&(codeInfo.Menus?codeInfo.Menus.map((ele,j)=>{
-                                return j===index&&((ele.soldOut||toggle)? 
-                                <img onClick={(e)=>{
-                                setToggle(false);
-                                setMenu(Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v}) )   
-                             }} src='/unreveal.png'/>
-                             :<img onClick={()=>{
-                                 setToggle(true);
-                                 setMenu(Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v}))   
-                             }     
-                             } src='/reveal.png'/>)
-                             }):Menu[index].soldOut?<img onClick={(e)=>{
-                                setMenu(
+                             }  
+                             { 
+                                 i===2&&(Menu[index].soldOut
+                                 ?<img onClick={()=>{
+                                    setMenu(
                                        Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:false}) :v})
-                                     )   
-                             }} src='/unreveal.png'/>
-                             :<img onClick={()=>{
-                                 setMenu(
-                                    Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v})
-                                        )   
+                                           )   
+                                    }} src='/unreveal.png'/>
+                                 :<img onClick={()=>{
+                                     setMenu(
+                                        Menu.map((v,ind)=>{return ind===index?Object.assign(v,{soldOut:true}) :v})
+                                            )   
                              }     
-                             } src='/reveal.png'/>)
-                             }     */}
+                             } src='/reveal.png'/>
+                            )}    
                              
                              </td>
                              </Fragment>
@@ -210,9 +202,5 @@ const manager2=(props)=>{
         </>
     )
 }   
-
-manager2.getInitialProps=async(context)=>{
-    console.log(context.store.getState());
-}
 
 export default manager2;
