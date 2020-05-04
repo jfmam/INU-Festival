@@ -54,18 +54,17 @@ const manager2=()=>{
      },[Btn])
      const onSubmitForm=useCallback(()=>{
          console.log("전송");
-         console.log(Menu);
-        // dispatch({
-        //     type:MENUPOST_REQUEST,
-        //     data:{
-        //     code:codeInfo.code,
-        //     boothName:boothname,
-        //     opTimeOpen,
-        //     opTimeClose,
-        //     full:Btn,
-        //     menu:Menu
-        //     }
-        // })
+        dispatch({
+            type:MENUPOST_REQUEST,
+            data:{
+            code:codeInfo.code,
+            boothName:boothname,
+            opTimeOpen,
+            opTimeClose,
+            full:Btn,
+            menu:Menu
+            }
+        })
      },[boothname,opTimeOpen,opTimeClose,Btn,Menu,codeInfo])
     const addTable=useCallback(()=>{
         setRows([...rows,1])
@@ -176,7 +175,7 @@ const manager2=()=>{
                                             )   
                              }     
                              } src='/reveal.png'/>
-                            )}    
+                             )}    
                              
                              </td>
                              </Fragment>

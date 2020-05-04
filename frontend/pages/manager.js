@@ -27,6 +27,9 @@ const manager=()=>{
     }
             )
     },[code])
+
+
+
     const codeConfirm=useCallback(async()=>{
         if(code===undefined){
             alert('코드를 입력해주세요');
@@ -54,7 +57,7 @@ const manager=()=>{
     </div>
     <div style={{textAlign:'center',marginTop:'12em'}}>
         <label>* 코드 문의: </label>
-       <img style={{verticalAlign:'middle'}} src="group-4.jpg"/>
+       <a href='https://pf.kakao.com/_xgxaSLd'><img  style={{verticalAlign:'middle'}} src="group-4.jpg"/></a>
     </div>
    </Fragment>
    )

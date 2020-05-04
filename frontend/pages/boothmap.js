@@ -12,7 +12,7 @@ const OriginMarker=styled.img`
 const ClickMarker=styled.img`
     position:absolute;
     left:${props=>props.left};
-    top:13.5rem
+    top:13.75rem
 `
 const OverLay=styled.div`
 z-index:500;
@@ -43,9 +43,9 @@ overflow-y:scroll
 const Boothmap=()=>{
     const [toggle,setToggle]=useState(false)
     const [detail,setDetail]=useState(false)
-    const [markerPosition,setMarkerPosition]=useState([{code:1,left:position.CONS8_7_6_5_RIGHT,top:position.TOP2}])
-    const [boothInfo,setBoothInfo]=useState();
-    //marker에 모두 code를 부여해준다.code를 부여해준다음에
+    const [markerPosition,setMarkerPosition]=useState([{code:1,left:position.CONS8_7_6_5_RIGHT,top:position.TOP2}]);
+    //position.js참조 
+    const [boothInfo,setBoothInfo]=useState();//클릭한 부스의 정보를 보여준다
 
     const backgroundImage=useRef();
 
@@ -72,7 +72,8 @@ const Boothmap=()=>{
             <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'38rem'}}/>
             {toggle?
             <Fragment>
-            {markerPosition.map((item,index)=>{return <ClickMarker left={`${item.left.slice(0,2)-1}%`} top={`${item.top.slice(0,2)-1}%`} src='/clickShape.png' onClick={markerUnClick}/>})} 
+            {markerPosition.map((item,index)=>{return <ClickMarker left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,2)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
+               {/* left는 -2 right는 -3.75해준다 */}
                <div style={{marginTop:24}}>  
                     <div>
             <span style={{fontSize:15,color:"#003e94",marginLeft:'2rem'}}><strong>{boothInfo[0].boothName}</strong></span>
