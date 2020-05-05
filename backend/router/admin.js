@@ -40,7 +40,7 @@ router.get('/:code',async(req,res,next)=>{//부스 조회 api/admin
 }
 })
 
-router.post('/',async(req,res,next)=>{//부스 등록
+router.patch('/',async(req,res,next)=>{//부스 등록
     try{
         const newAdmin=await db.Admin.create({
             code:req.body.code,//이부분 나중에 변경
