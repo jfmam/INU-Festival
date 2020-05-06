@@ -42,12 +42,14 @@ router.get('/:code',async(req,res,next)=>{//부스 조회 api/admin
 
 router.patch('/',async(req,res,next)=>{//부스 등록
     try{
-        const newAdmin=await db.Admin.create({
-            code:req.body.code,//이부분 나중에 변경
+        
+        const newAdmin=await db.Admin.update({
             boothName:req.body.boothName,
             opTimeOpen:req.body.opTimeOpen,
             opTimeClose:req.body.opTimeClose,
             full:req.body.full
+        },{
+            where:{code:req.body.code}
         })
         if(req.body.menu){
             if(Array.isArray(req.body.menu)){
@@ -63,31 +65,6 @@ router.patch('/',async(req,res,next)=>{//부스 등록
     }
 })
 
-router.patch('/',async(req,res,next)=>{
-    try{
-        const updateAdmin=db.Admin.update({
-           boothName:req.body.boothName,
-            opTimeOpen:req.body.opTimeOpen,
-            opTimeClose:req.body.opTimeClose,
-            full:req.body.full
-        },{
-            where:{code:req.body.code}
-        })
-        await db.Menu.delete({//destroy는 단순히 관계파괴인가...
-            where:{AdminCode:req.body.code}
-        })
-        if(req.body.menu){
-             if(Array.isArray(req.body.menu)){
-                  const menu = await Promise.all(req.body.menu.map((item,index) => {
-          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut});
-            }))
-            await updateAdmin.addMenus(menu);
-        }
-        }
-        res.status(200).send("변경성공")
-    }catch(e){
 
-    }
-})
 
 module.exports = router;
