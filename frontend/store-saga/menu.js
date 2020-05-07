@@ -7,7 +7,7 @@ import  { CODE_REQUEST, CODE_SUCCESS, CODE_FAILURE, MENUPOST_REQUEST, MENUPOST_F
 
 function PostMenuAPI(menuData){
     console.log(menuData)
- return axios.post('/admin',menuData);
+ return axios.patch('/admin',menuData);
 }
 
 function* PostMenu(action){

@@ -7,19 +7,39 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from '../store';
 import rootSaga from '../store-saga';
-
+import {Helmet} from 'react-helmet';
+import {Container} from 'next/app'
 
 const Home=({Component,store,pageProps})=>{
     return(
+
         <Provider store={store}>
-         <Head>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b52519cdc58be5b6bdd09206ebb07182"></script>
-        <title>InuFestival</title>
-      </Head>
+     <Helmet
+          title="INUfestival"
+          htmlAttributes={{ lang: 'ko' }}
+          meta={[{
+            charset: 'UTF-8',
+          }, {
+            name: 'viewport',
+            content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+          }, {
+            'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+          }, {
+            name: 'description', content: 'INUfestival',
+          }, {
+            name: 'og:title', content: 'INUfestival',
+          }, {
+            name: 'og:description', content: 'INUfestival',
+          }, {
+            property: 'og:type', content: 'website',
+          }]}
+
+        />
     <AppLayout>
         <Component {...pageProps}/>
     </AppLayout>
     </Provider>
+
     )
 }
 
