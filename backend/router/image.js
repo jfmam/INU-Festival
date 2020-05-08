@@ -34,8 +34,9 @@ router.post('/shuttle',upload.single('shuttleImage'),async(req,res,next)=>{//이
 })
 router.post('/', upload.single('indexImage'), async (req, res, next) => { //이미지 등록,multer사용
     try{
+        console.log(req.files)
     const image = await db.Image.create({
-        lineUp:req.body.indexImage
+        lineUp:req.files
     })
     res.status(200).send('인덱스이미지등록')
 }

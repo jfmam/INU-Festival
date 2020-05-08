@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react
 import styled from 'styled-components'
 import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
-import {MENUPOST_REQUEST} from '../../store/menu';
+import {MENUPOST_REQUEST, POSTSUCCESS} from '../store/menu';
 
 const Input=styled.input`
     border:'none'
@@ -69,17 +69,22 @@ const manager2=()=>{
     const addTable=useCallback(()=>{
         setRows([...rows,1])
     },[rows]) 
-    if(postSuccess){
-        alert("등록성공");
-        router.push('/manager')
-    }
 
     useEffect(()=>{
+
         codeInfo.Menus&&setMenu(Menu.map((item,index)=>{
             return codeInfo.Menus[index]?Object.assign(item,codeInfo.Menus[index]):item;
         }))
+           if (postSuccess) {
+             alert("등록성공");
+             dispatch({
+                 type:POSTSUCCESS,
+                 data:false
+             })
+             router.push('/')
+         }
         
-    },[])
+    },[postSuccess,codeInfo])
 
     return(
         <>

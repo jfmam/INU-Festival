@@ -16,6 +16,8 @@ export const GETALLBOOTHINFO_REQUEST = 'FRONT/GETALLBOOTHINFO_REQUEST'
 export const GETALLBOOTHINFO_SUCCESS = 'FRONT/GETALLBOOTHINFO_SUCCESS'
 export const GETALLBOOTHINFO_FAILURE = 'FRONT/GETALLBOOTHINFO_FAILURE'
 
+export const POSTSUCCESS='FRONT/POSTSUCCESS'
+
 export const initialState={
    menuPostRequest:false,
    menuGetRequest:false,
@@ -101,6 +103,10 @@ export default (state=initialState,action)=>{
                draft.boothError=action.error 
                break;
            }
+            case POSTSUCCESS:{
+              draft.postSuccess=action.data
+              break;
+            }
            default:{
                return state;
            }

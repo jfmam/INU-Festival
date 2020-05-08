@@ -5,22 +5,18 @@ import { INDEXIMAGE_REQUEST } from '../store/image';
 const startPage=()=>{
   const dispatch=useDispatch();
   const {indexImage}=useSelector(state=>state.image);
-  useEffect(()=>{
-    dispatch({
-      type:INDEXIMAGE_REQUEST
-    })
-  },[])
+console.log(indexImage)
     return(
         <>
-          <img style={{width:'100%',height:'38rem'}} src="/dummyImage.png"></img>
+          <img style={{width:'100%',height:'38rem'}} src={indexImage}></img>
         </>
     )
 }
 
-// startPage.getInitialProps=async(context)=>{
-//   context.store.dispatch({
-//       type: INDEXIMAGE_REQUEST
-//   })
-// }
+startPage.getInitialProps=async(context)=>{
+  context.store.dispatch({
+      type: INDEXIMAGE_REQUEST
+  })
+}
 
 export default startPage;

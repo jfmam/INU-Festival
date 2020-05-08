@@ -5,11 +5,7 @@ import { SHUTTLEIMAGE_REQUEST } from '../store/image';
 const Shuttle=()=>{
   const dispatch=useDispatch();
   const {shuttleImage}=useSelector(state=>state.image);
-  useEffect(()=>{
-    dispatch({
-      type:SHUTTLEIMAGE_REQUEST
-    })
-  },[])
+  console.log(shuttleImage);
  
   return(
     
@@ -19,10 +15,10 @@ const Shuttle=()=>{
     )     
 }
 
-// Shuttle.getInitialProps=async(context)=>{
-//   context.store.dispatch({
-//       type: SHUTTLEIMAGE_REQUEST
-//   })
-// }
+Shuttle.getInitialProps=async(context)=>{
+  context.store.dispatch({
+      type: SHUTTLEIMAGE_REQUEST
+  })
+}
 
 export default Shuttle;

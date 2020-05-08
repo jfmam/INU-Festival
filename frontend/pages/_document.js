@@ -1,12 +1,15 @@
 import React from 'react';
 import Document,{Head,Html,Main,NextScript} from 'next/document';
 import {Helmet} from 'react-helmet';
+import { ServerStyleSheet } from 'styled-components'
 
 class AppDocument extends Document{
     static async getInitialProps(context){
-        const page=context.renderPage((App)=>(props)=><App {...props}/>)
-        return {...page,helmet:Helmet.renderStatic()};//ssr을 할 수있다.
-
+        const sheet=new ServerStyleSheet()
+        const page=context.renderPage((App)=>(props)=>sheet.collectStyles(<App {...props}/>))
+        const styletags=sheet.getStyleElement();
+        return {...page,helmet:Helmet.renderStatic(),styletags};//ssr을 할 수있다.
+        //return한값은 props로 다시온다.
     }
     render(){
         const {htmlAttributes,bodyAttributes,...helmet}=this.props.helmet;
@@ -18,6 +21,7 @@ class AppDocument extends Document{
         return(
             <Html {...htmlAttrs}>
                 <Head>
+                    {this.props.styletags}
                     {Object.values(helmet).map(v=>v.toComponent())}
                 </Head>
                 <body {...bodyAttrs}>

@@ -40,7 +40,7 @@ const manager=()=>{
     },[code])
 
     useEffect(()=>{
-        if(codeInfo&&!codeRequest){router.push('/manager/[manager]',`/manager/${code}`);}
+        if(codeInfo&&!codeRequest){router.push('/manager2');}
     },[codeInfo,codeRequest])
    return( 
     <Fragment>
