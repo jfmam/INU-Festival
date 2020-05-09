@@ -3,7 +3,35 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 
+const App=styled.div`
+   @media (max-width:360px) {
+      max-width:360px;
+      max-height:640px;
+    }
+   @media (max-width:411px) {
+    max-width:411px;
+    max-height:820px;
+    }
+    overflow:scroll;
+`
 
+const Drawerpage=styled.div`
+   transition: all 0.2 s;
+   &>active {
+       transform: translate(-75 % , 96 % );
+   }
+`
+
+const Drawer=styled.aside`
+    position:absolute;
+    z-index:20;
+    width:75%;
+    height:96%;
+   background-color:#fff;
+   top:32;left:22%;
+   border:1px solid #d3d3d3;
+   overflow:scroll;
+`
 
 const AppLayout=({children})=>{
     const Menu=['부스지도','야간셔틀버스','타임테이블'];
@@ -17,8 +45,7 @@ const AppLayout=({children})=>{
         })
     }
 
-   const header=useRef()
-
+    const header=useRef();
     const drawer=useCallback(async()=>{   
      if(!toggle){
         header.current.style.backgroundColor='rgba(35, 35, 35, 0.7)'
@@ -29,7 +56,7 @@ const AppLayout=({children})=>{
     }},[toggle])
 
     return(
-    <div>   
+    <App>   
     <header ref={header} style={{marginTop:32,display:'flex',
     alignContent:'center',justifyContent:'space-around',
     borderBottom:'solid 1px #979797',height:66}}>
@@ -43,10 +70,9 @@ const AppLayout=({children})=>{
     </header>
     {/* drawer부분.. &&사용하기*/}
     {toggle&&
-    <div>
-    <div style={{position:'absolute',width:'100%',height:'100%',zIndex:19,backgroundColor:'rgba(35, 35, 35, 0.7)',opacity:0.7}}></div>
-    <aside className='drawer' style={{position:'absolute',zIndex:20,width:'77%',height:'96%'
-   ,backgroundColor:'#ffffff',top:32,left:'30%',border:'1px solid #d3d3d3'}}>
+    <Drawerpage>
+    <div style={{position:'absolute',overflowY:'scroll',width:'96%',height:'96%',zIndex:19,backgroundColor:'rgba(35, 35, 35, 0.7)',opacity:0.7}}></div>
+    <Drawer>
         <img style={{marginLeft:'82%',marginTop:13.2}} onClick={async()=>{await getToggle(false);
         await drawer()
         }} src='/xbtn.png'></img>
@@ -58,17 +84,17 @@ const AppLayout=({children})=>{
         }}><p key={index} style={{borderBottom:'solid 1px #d3d3d3',width:132,paddingBottom:23.2}}>{item}</p></a></Link>
         })}
         </div>
-        <div style={{marginLeft:'17%',marginTop:'21em'}}>
+        <div style={{marginLeft:'17%',marginTop:'15rem'}}>
             <Link href={{pathname:'/manager'}}><a onClick={()=>{ setToggle(false)
             drawer();}}><strong>운영자페이지</strong></a></Link>
         </div>
-    </aside>
-    </div>
+    </Drawer>
+    </Drawerpage>
     }
     <section>
     {children}
     </section>
-    </div>
+    </App>
     )
 }
 

@@ -6,6 +6,8 @@ import { INDEXPOST_REQUEST ,SHUTTLEPOST_REQUEST} from '../store/image';
 const Admin=()=>{
     const [index,setIndex]=useState();
     const [shuttle,setShuttle]=useState();
+
+
     const dispatch=useDispatch();
 
     const indexImgChange=useCallback((e)=>{
@@ -48,10 +50,7 @@ const Admin=()=>{
         <input  onChange={shuttleImgChange} type="file" ></input>
         <button htmlType="submit">등록하기</button>
         </div>
-        </form>
-       <form>
-           <label>일정등록하기</label><br/>
-       </form>
+        </form>        
         </>
     )
 }
