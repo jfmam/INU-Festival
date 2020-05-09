@@ -37,7 +37,7 @@ function postIndexAPI(indexImg) {
 
 function* postIndex(action){
     try{
-    const result=yield call(potstIndexAPI);
+    const result=yield call(postIndexAPI,action.data);
     yield put({
         type:INDEXPOST_SUCCESS,
         data:result.data

@@ -4,10 +4,6 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
 import {MENUPOST_REQUEST, POSTSUCCESS} from '../store/menu';
 
-const Input=styled.input`
-    border:'none'
-    backgroundColor='#f0f0f0'
-`
 
 export const useInput = (initValue = null) => {
   const [value, setter] = useState(initValue);
@@ -26,15 +22,15 @@ const manager2=()=>{
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
         , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
     const [toggle,setToggle]=useState(false);
-    const [boothname,setBoothname]=useInput('');
-    const [opTimeOpen,setopTimeOpen]=useInput('');
-    const [opTimeClose,setopTimeClose]=useInput('');
+    const [boothname,setBoothname]=useInput(null);
+    const [opTimeOpen,setopTimeOpen]=useInput(null);
+    const [opTimeClose,setopTimeClose]=useInput(null);
 
     const router=useRouter();
     const dispatch=useDispatch(); 
     const fBtn=useRef();
     const eBtn=useRef();
-    const {postSuccess,codeInfo,codeRequest}=useSelector(state=>state.menu);
+    const {postSuccess,codeInfo,codeRequest,menuPostRequest}=useSelector(state=>state.menu);
     const changeButton=useCallback((e)=>{
       e.preventDefault();
     Btn?setBtn(false):setBtn(true);
@@ -58,9 +54,9 @@ const manager2=()=>{
             type:MENUPOST_REQUEST,
             data:{
             code:codeInfo.code,
-            boothName:boothname,
-            opTimeOpen,
-            opTimeClose,
+            boothName:boothname?boothname:codeInfo.boothName,
+            opTimeOpen:opTimeOpen?opTimeOpen:codeInfo.opTimeOpen,
+            opTimeClose:opTimeClose?opTimeClose:codeInfo.opTimeClose,
             full:Btn,
             menu:Menu
             }
@@ -71,20 +67,19 @@ const manager2=()=>{
     },[rows]) 
 
     useEffect(()=>{
-
         codeInfo.Menus&&setMenu(Menu.map((item,index)=>{
             return codeInfo.Menus[index]?Object.assign(item,codeInfo.Menus[index]):item;
         }))
-           if (postSuccess) {
+        if (postSuccess) {
              alert("등록성공");
              dispatch({
                  type:POSTSUCCESS,
                  data:false
              })
-             router.push('/')
          }
+         if(postSuccess&&!menuPostRequest) router.push('/manager');
         
-    },[postSuccess,codeInfo])
+    },[postSuccess,codeInfo,menuPostRequest])
 
     return(
         <>
@@ -93,7 +88,7 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>부스이름</label>
                 <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input onChange={setBoothname} defaultValue={codeInfo.boothName&&codeInfo.boothName} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
+                <input onChange={setBoothname} defaultValue={codeInfo?(codeInfo.boothName?codeInfo.boothName:''):''} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
                 style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                 </div>
@@ -102,11 +97,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>운영시간</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input onChange={setopTimeOpen} defaultValue={codeInfo.opTimeOpen&&codeInfo.opTimeOpen} name="opTimeOpen"  type='text' placeholder='00 : 00' 
+                <input onChange={setopTimeOpen} defaultValue={codeInfo?(codeInfo.opTimeOpen?codeInfo.opTimeOpen:''):''} name="opTimeOpen"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
                  <label>  ~  </label>
-                 <input onChange={setopTimeClose}  defaultValue={codeInfo.opTimeClose&&codeInfo.opTimeClose} name="opTimeClose"  type='text' placeholder='00 : 00' 
+                 <input onChange={setopTimeClose}  defaultValue={codeInfo?(codeInfo.opTimeClose?codeInfo.opTimeClose:''):''} name="opTimeClose"  type='text' placeholder='00 : 00' 
                 style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
                 </input>
             </div>
@@ -115,11 +110,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={changeButton} defaultChecked={codeInfo.full&&codeInfo.full}
+                <button type='button' title='만석' ref={fBtn} onClick={changeButton}  defaultChecked={codeInfo&&codeInfo.full&&codeInfo.full}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo.full&&!(codeInfo.full)}
+                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo&&codeInfo.full&&!(codeInfo.full)}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>

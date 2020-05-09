@@ -49,10 +49,9 @@ const Admin=()=>{
         <button htmlType="submit">등록하기</button>
         </div>
         </form>
-        {/* <label>일정 등록하기</label>
-        <div>
-        <span>날짜</span><span>시간과 일정입력</span>
-        </div> */}
+       <form>
+           <label>일정등록하기</label><br/>
+       </form>
         </>
     )
 }

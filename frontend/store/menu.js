@@ -47,12 +47,14 @@ export default (state=initialState,action)=>{
            }
              case MENUPOST_SUCCESS:{
                draft.menuPostRequest=false;
+               draft.codeRequest=false;
                draft.postSuccess=action.data
                break;
              
            }
-             case MENUPOST_REQUEST:{
+             case MENUPOST_FAILURE:{
                draft.menuPostRequest=false;
+               draft.codeRequest=false;
                draft.menuPostError=action.error 
                break;
            }
@@ -105,6 +107,7 @@ export default (state=initialState,action)=>{
            }
             case POSTSUCCESS:{
               draft.postSuccess=action.data
+              draft.codeInfo=null
               break;
             }
            default:{

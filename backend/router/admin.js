@@ -40,9 +40,18 @@ router.get('/:code',async(req,res,next)=>{//부스 조회 api/admin
 }
 })
 
+
 router.patch('/',async(req,res,next)=>{//부스 등록
     try{
-        
+           const Menus=await db.Menu.findAll({
+            where:{AdminCode:req.body.code}
+        })
+        console.log(Menus)
+        if(Menus){
+                    await db.Menu.destroy({
+                    where:{AdminCode:req.body.code}
+                })     
+            }
         const newAdmin=await db.Admin.update({
             boothName:req.body.boothName,
             opTimeOpen:req.body.opTimeOpen,
@@ -51,15 +60,15 @@ router.patch('/',async(req,res,next)=>{//부스 등록
         },{
             where:{code:req.body.code}
         })
+    
         if(req.body.menu){
             if(Array.isArray(req.body.menu)){
                   const menu = await Promise.all(req.body.menu.map((item,index) => {
-          return db.Menu.create({ food: item.food,price:item.price,soldOut:item.soldOut});
+          return db.Menu.create({AdminCode:req.body.code, food: item.food,price:item.price,soldOut:item.soldOut});
             }))
-            await newAdmin.addMenus(menu);
         }
-        res.status(200).send("등록성공")
     }
+        res.status(200).send("등록성공")
     }catch(e){
         res.send(e);
     }

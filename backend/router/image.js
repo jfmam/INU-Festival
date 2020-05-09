@@ -11,9 +11,7 @@ const upload = multer({
       done(null, 'uploads');
     },
     filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext); // 제로초.png, ext===.png, basename===제로초
-      done(null, basename + new Date().valueOf() + ext);
+      done(null, file.originalname);
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
@@ -23,9 +21,7 @@ const upload = multer({
 
 router.post('/shuttle',upload.single('shuttleImage'),async(req,res,next)=>{//이미지 등록,multer사용
     try{
-    const image=await db.Image.create({
-        shuttle:req.body.shuttleImage
-    })
+        console.log(req.file);
     res.status(200).send('셔틀버스이미지등록')
 }catch(e){
     res.send(e);
@@ -34,10 +30,8 @@ router.post('/shuttle',upload.single('shuttleImage'),async(req,res,next)=>{//이
 })
 router.post('/', upload.single('indexImage'), async (req, res, next) => { //이미지 등록,multer사용
     try{
-        console.log(req.files)
-    const image = await db.Image.create({
-        lineUp:req.files
-    })
+        console.log(req.file)
+        
     res.status(200).send('인덱스이미지등록')
 }
     catch (e) {

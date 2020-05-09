@@ -35,13 +35,18 @@ const manager=()=>{
             alert('코드를 입력해주세요');
             return;
         }
+        // if(code===0000){
+        //     let pwd=prompt('비밀번호 입력');
+        //     if(pwd===0000) {               
+        //     }
+        // }
         await codeDispatch()
-
+       
     },[code])
 
     useEffect(()=>{
-        if(codeInfo&&!codeRequest){router.push('/manager2');}
-    },[codeInfo,codeRequest])
+    if (codeInfo && !codeRequest) router.push('/manager2');
+    },[codeRequest,codeInfo])
    return( 
     <Fragment>
    <div style={{display:'block',textAlign:'center',marginTop:188}}>

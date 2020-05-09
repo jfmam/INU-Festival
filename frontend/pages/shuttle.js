@@ -15,10 +15,6 @@ const Shuttle=()=>{
     )     
 }
 
-Shuttle.getInitialProps=async(context)=>{
-  context.store.dispatch({
-      type: SHUTTLEIMAGE_REQUEST
-  })
-}
+
 
 export default Shuttle;
