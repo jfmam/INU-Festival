@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {useDispatch,useSelector} from 'react-redux'
 import * as position from '../components/position'
 import {GETALLBOOTHINFO_REQUEST} from '../store/menu'
+import styled from 'styled-components';
 
 const OriginMarker=styled.img`
     position:absolute;
@@ -37,6 +38,26 @@ height:24rem;
 text-align:center;
 margin-top:11.6rem;
 overflow-y:scroll
+`
+
+const BoothInfo=styled.div`
+margin-top:24px;
+`
+const MenuInfo=styled.div`
+margin-top:50px;
+display:inline-block;
+overflow-y:scroll;
+padding-bottom:8px;
+width:16rem;
+border-bottom:1px solid rgba(35,35,35,0.7);
+`
+
+const MenuInfoDetail=styled.div`
+clear:both;
+display:inline-block;
+padding:8px;
+width:16rem;
+border-bottom:1px solid rgba(35,35,35,0.7);
 `
 
 
@@ -74,13 +95,13 @@ const Boothmap=()=>{
             <Fragment>
             {markerPosition.map((item,index)=>{return <ClickMarker left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,2)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
                {/* left는 -2 right는 -3.75해준다 */}
-               <div style={{marginTop:24}}>  
+               <BoothInfo>  
                     <div>
             <span style={{fontSize:15,color:"#003e94",marginLeft:'2rem'}}><strong>{boothInfo[0].boothName}</strong></span>
             <span style={{float:'right',fontSize:15,color:"#333",marginRight:'2rem'}}>{`${boothInfo[0].opTimeOpen}~${boothInfo[0].opTimeClose}`}</span>
                     </div>
             {boothInfo[0].full&&<div><label style={{float:'right',fontSize:13,color:'#f00',marginTop:8,marginRight:'2rem'}}>만석</label></div>}   
-               </div>
+               </BoothInfo>
                  {detail?   
                  <OverLay>
                     <Modal>
@@ -95,21 +116,21 @@ const Boothmap=()=>{
                         <div style={{margin:11}}><label> 
                         {`${boothInfo[0].opTimeOpen}~${boothInfo[0].opTimeClose}`} 
                         </label> </div>
-                        <div style={{marginTop:50,display:'inline-block',paddingBottom:8,width:'16rem',borderBottom:'1px solid rgba(35,35,35,0.7)'}}>
+                        <MenuInfo>
                             <strong>메뉴</strong> 
-                        </div>
+                        </MenuInfo>
                       </div>
                      
                     {boothInfo[0].Menus.map((item,index)=>{
                         return(
                         <>
-                        <div style={{clear:"both",display:'inline-block',padding:8,width:'16rem',borderBottom:'1px solid rgba(35,35,35,0.7)'}}>
+                        <MenuInfoDetail>
                         <span style={{float:'left',padding:4,marginLeft:'1rem'}}>{item.food}</span>
                         {item.soldOut
                         ?<span style={{float:'right',padding:4,marginRight:'1rem',color:'#f00'}}>품절</span>
                         :<span style={{float:'right',padding:4,marginRight:'1rem'}}>{item.price}</span>
                         }
-                        </div>
+                        </MenuInfoDetail>
                         </>
                         )
                     })}

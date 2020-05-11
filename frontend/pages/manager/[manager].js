@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect, Fragment } from 'react
 import styled from 'styled-components'
 import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
-import {MENUPOST_REQUEST, POSTSUCCESS} from '../store/menu';
+import {MENUPOST_REQUEST, POSTSUCCESS} from '../../store/menu';
 
 
 export const useInput = (initValue = null) => {
@@ -34,7 +34,6 @@ const manager2=()=>{
     const changeButton=useCallback((e)=>{
       e.preventDefault();
     Btn?setBtn(false):setBtn(true);
-
     if(!Btn){
         eBtn.current.style.borderColor="#64a5ff"
         eBtn.current.style.color='#64a5ff'
@@ -62,11 +61,14 @@ const manager2=()=>{
             }
         })
      },[boothname,opTimeOpen,opTimeClose,Btn,Menu,codeInfo])
-    const addTable=useCallback(()=>{
-        setRows([...rows,1])
+    const addTable=useCallback((e)=>{
+        e.preventDefault();
+        setRows([...rows,1]);
+        console.log(rows.length);
     },[rows]) 
 
     useEffect(()=>{
+        codeInfo.full&&setBtn(codeInfo.full);
         codeInfo.Menus&&setMenu(Menu.map((item,index)=>{
             return codeInfo.Menus[index]?Object.assign(item,codeInfo.Menus[index]):item;
         }))
@@ -110,11 +112,11 @@ const manager2=()=>{
                 <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
                 <label>만석여부</label>
                 <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={changeButton}  defaultChecked={codeInfo&&codeInfo.full&&codeInfo.full}
+                <button type='button' title='만석' ref={fBtn} onClick={changeButton}  defaultChecked={Btn}
                 style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     만석
                 </button>
-                 <button type='button' placeholder='자리있음' ref={eBtn} onClick={changeButton} defaultChecked={codeInfo&&codeInfo.full&&!(codeInfo.full)}
+                 <button type='button' ref={eBtn} onClick={changeButton} defaultChecked={!Btn}
                 style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
                     자리있음
                 </button>
@@ -190,9 +192,7 @@ const manager2=()=>{
                 </div>
             </div>
             <div style={{textAlign:'center'}}>
-                  <label style={{color:'#223ca3',fontSize:13}} onClick={(e)=>{
-                      e.preventDefault()
-                      addTable()}}>+추가하기</label>
+                  {rows.length<10&&<label style={{color:'#223ca3',fontSize:13}} onClick={addTable}>+추가하기</label>}
             </div>
               <footer style={{textAlign:'center'}}>
             <img onClick={onSubmitForm} src='/group.png'/>

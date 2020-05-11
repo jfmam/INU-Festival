@@ -1,10 +1,34 @@
 import React, { useState, useCallback, useRef, Fragment,useEffect } from 'react'
 import {useRouter} from 'next/router'
 import {useDispatch, useSelector} from 'react-redux'
-import {CODE_REQUEST} from '../store/menu'
+import {CODE_REQUEST} from '../store/menu';
+import styled from 'styled-components';
 
-
-
+const CodeInput=styled.div`
+display:block;
+text-align:center;
+margin-top:188px;
+&>p{
+font-size:15px;
+}
+&>input{
+width:225px;
+height:41px;
+border-radius:7px;
+text-align:center;
+font-size:15px;
+background-color:#f0f0f0;
+margin-bottom:23px;
+margin-top:23px;
+}
+`
+const CodeInquire=styled.div`
+text-align:center;
+margin-top:12rem;
+&>img{
+    vertical-align:middle
+}
+`
 
 const manager=()=>{
     const [code,setCode]=useState('')
@@ -45,26 +69,25 @@ const manager=()=>{
     },[code])
 
     useEffect(()=>{
-    if (codeInfo && !codeRequest) router.push('/manager2');
+    if (codeInfo && !codeRequest&&code) router.push({pathname:`/manager/${code}`,as:`/manager/${code}`});
     },[codeRequest,codeInfo])
    return( 
-    <Fragment>
-   <div style={{display:'block',textAlign:'center',marginTop:188}}>
+    <>
+   <CodeInput style={{display:'block',textAlign:'center',marginTop:188}}>
     <form onSubmit={codeConfirm}>
-       <p style={{fontSize:15,}}>코드를 입력해주세요</p>     
+       <p>코드를 입력해주세요</p>     
             <input ref={inputEL} type='text' onChange={onChangeCode}
-                    value={code} style={{width: 225, height:41,borderRadius: 7,textAlign:"center",
-                     fontSize:15,backgroundColor: '#f0f0f0',marginBottom:23,marginTop:23}}>
+                    value={code}>
         </input>
         <img onClick={codeConfirm} src="/group.png"></img>
     </form>
            {/* 코드 검사후 없으면 admoin2.js 있으면 [adminpage]로 이동한다. */}
-    </div>
-    <div style={{textAlign:'center',marginTop:'12em'}}>
+    </CodeInput>
+    <CodeInquire>
         <label>* 코드 문의: </label>
-       <a href='https://pf.kakao.com/_xgxaSLd'><img  style={{verticalAlign:'middle'}} src="group-4.jpg"/></a>
-    </div>
-   </Fragment>
+       <a href='https://pf.kakao.com/_xgxaSLd'><img src="group-4.jpg"/></a>
+    </CodeInquire>
+   </>
    )
 }
 export default manager;

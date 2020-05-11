@@ -5,13 +5,18 @@ import { INDEXIMAGE_REQUEST } from '../store/image';
 const startPage=()=>{
   const dispatch=useDispatch();
   const {indexImage}=useSelector(state=>state.image);
-console.log(indexImage)
+console.log(indexImage);
     return(
         <>
-          <img style={{width:'100%',height:'38rem'}} src={`http://localhost:5000/dummyImage1588920910451.png`}></img>
+          <img style={{width:'100%',height:'38rem'}} src={`http://localhost:5000/${indexImage.lineUp}`}></img>
         </>
     )
 }
 
+startPage.getInitialProps=async(context)=>{
+  context.store.dispatch({
+    type:INDEXIMAGE_REQUEST
+  })
+}
 
 export default startPage;

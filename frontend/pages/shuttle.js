@@ -8,13 +8,17 @@ const Shuttle=()=>{
   console.log(shuttleImage);
  
   return(
-    
+
         <>   
-          <img style={{width:'100%',height:'38em'}}  src="/shuttle.png"></img>
+          <img style={{width:'100%',height:'38em'}}  src={`http://localhost:5000/${shuttleImage.shuttle}`}></img>
         </>
     )     
 }
 
-
+Shuttle.getInitialProps=async(context)=>{
+  context.store.dispatch({
+    type:SHUTTLEIMAGE_REQUEST
+  })
+}
 
 export default Shuttle;
