@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useRef, Fragment,useEffect } from 'react'
 import {useRouter} from 'next/router'
 import {useDispatch, useSelector} from 'react-redux'
-import {CODE_REQUEST} from '../store/menu';
+import {CODE_REQUEST, RESET} from '../store/menu';
 import styled from 'styled-components';
 
 const CodeInput=styled.div`
 display:block;
 text-align:center;
 margin-top:188px;
-&>p{
+&>form>p{
 font-size:15px;
 }
-&>input{
+&>form>input{
 width:225px;
 height:41px;
 border-radius:7px;
@@ -25,7 +25,7 @@ margin-top:23px;
 const CodeInquire=styled.div`
 text-align:center;
 margin-top:12rem;
-&>img{
+&>a>img{
     vertical-align:middle
 }
 `
@@ -69,8 +69,8 @@ const manager=()=>{
     },[code])
 
     useEffect(()=>{
-    if (codeInfo && !codeRequest&&code) router.push({pathname:`/manager/${code}`,as:`/manager/${code}`});
-    },[codeRequest,codeInfo])
+    if (codeInfo &&!codeRequest&&code) {router.push(`/manager/[manager]`,`/manager/${code}`);}
+    },[codeRequest,codeInfo,code])
    return( 
     <>
    <CodeInput style={{display:'block',textAlign:'center',marginTop:188}}>
@@ -89,5 +89,11 @@ const manager=()=>{
     </CodeInquire>
    </>
    )
+}
+
+manager.getInitialProps=async(context)=>{
+    context.store.dispatch({
+        type:RESET
+    })
 }
 export default manager;

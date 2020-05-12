@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {useDispatch,useSelector} from 'react-redux'
 import * as position from '../components/position'
 import {GETALLBOOTHINFO_REQUEST} from '../store/menu'
-import styled from 'styled-components';
+
 
 const OriginMarker=styled.img`
     position:absolute;

@@ -4,6 +4,95 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
 import {MENUPOST_REQUEST, POSTSUCCESS} from '../../store/menu';
 
+const BoothNameDiv=styled.div`
+margin-top:2rem;
+margin-bottom:2.7rem;
+&>img{
+    margin-left:1.8rem;
+    width:12px;
+    height:12px;
+}
+&>div{
+    text-align-last:center;
+    margin-top:0.9rem;
+    &>input{
+        text-align:center;
+        width: 300px;
+        height: 36px;
+        border-radius: 7px;
+        background-color: #f0f0f0;
+    }
+}
+`
+
+const Openingtime=styled.div`
+&>img{
+    margin-left:1.8rem;
+    width:12px;
+    height:12px;
+}
+&>div{
+    text-align:center;
+    margin-top:0.9rem;
+    &>input{
+        text-align:center;
+        width:131px;
+        height:36px;
+        border-radius:7px;
+        background-color: #f0f0f0;
+    }
+}
+`
+const FullDiv=styled.div`
+margin-top:2.7rem;
+margin-bottom:2.7rem;
+&>img{
+    marginleft:1.8rem;
+    width:12px;
+    height:12px;
+}
+&>div{
+    text-align:center;
+    margin-top:0.9rem;
+}
+`
+const FullBtn=styled.button`
+ margin-right:2.3rem;
+ text-align:center;
+ width:131px;
+ height:36px;
+ border-radius:7px;
+ background-color:#fff;
+ border:${props=>props.borderColor};
+ color:${props=>props.buttonColor};
+`
+const EmptyBtn=styled.button`
+color:${props=>props.buttonColor};
+ border:${props=>props.borderColor};
+ text-align:center;
+ width:131px;
+ height:36px;
+ border-radius:7px;
+ background-color:#fff;
+`
+const MenuPost=styled.div`
+&>img{
+margin-left:1.7rem;
+width:12px;
+height:12px;
+}
+&>div{
+ display:flex;
+ justify-content:center;
+}
+`
+const Table=styled.table`
+width:18.75rem; 
+border-radius:7px;
+background-color:#f0f0f0;
+ text-align:center;
+
+`
 
 export const useInput = (initValue = null) => {
   const [value, setter] = useState(initValue);
@@ -13,42 +102,41 @@ export const useInput = (initValue = null) => {
   return [value, handler];
 };
 
-const manager2=()=>{
+const manager2=(props)=>{
     const [rows,setRows]=useState([1,2,3,4,5]);
     const [cols,setCols]=useState([0,1,2]);
-    const [Btn,setBtn]=useState(false);
-    const [emptyBtn,setEmptyBtn]=useState(false);
-    const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
-        , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }
-        , { food: '', price: '', soldOut: false }, { food: '', price: '', soldOut: false }])
+    const [fullBtn,setFullBtn]=useState(false);
+    const [emptyBtn,setEmptyBtn]=useState(true);
+    const [Menu, setMenu] = useState([{ food: '', price: '', soldOut: false }, 
+        { food: '', price: '', soldOut: false },
+        { food: '', price: '', soldOut: false },{ food: '', price: '', soldOut: false },
+        { food: '', price: '', soldOut: false },{ food: '', price: '', soldOut: false },
+        { food: '', price: '', soldOut: false },{ food: '', price: '', soldOut: false },
+        { food: '', price: '', soldOut: false },{ food: '', price: '', soldOut: false }])
     const [toggle,setToggle]=useState(false);
     const [boothname,setBoothname]=useInput(null);
     const [opTimeOpen,setopTimeOpen]=useInput(null);
     const [opTimeClose,setopTimeClose]=useInput(null);
-
+    console.log(fullBtn,emptyBtn)
     const router=useRouter();
     const dispatch=useDispatch(); 
-    const fBtn=useRef();
-    const eBtn=useRef();
-    const {postSuccess,codeInfo,codeRequest,menuPostRequest}=useSelector(state=>state.menu);
+    const {postSuccess,codeRequest,menuPostRequest,codeInfo}=useSelector(state=>state.menu);
     const changeButton=useCallback((e)=>{
       e.preventDefault();
-    Btn?setBtn(false):setBtn(true);
-    if(!Btn){
-        eBtn.current.style.borderColor="#64a5ff"
-        eBtn.current.style.color='#64a5ff'
-        fBtn.current.style.borderColor = "#333"
-        fBtn.current.style.color = '#333'
+   if(e.target.textContent==='만석'){
+        setFullBtn(true);
+        setEmptyBtn(false);
+   }
+    else{
+        setEmptyBtn(true);
+        setFullBtn(false);
     }
-   else {
-        fBtn.current.style.borderColor = "#f00"
-        fBtn.current.style.color = '#f00'
-        eBtn.current.style.borderColor = "#333"
-        eBtn.current.style.color = '#333'
-    }
-     },[Btn])
+     },[emptyBtn,fullBtn])
      const onSubmitForm=useCallback(()=>{
-         console.log("전송");
+         const MenuList=Menu.map((item,index)=>{
+             if(item.food&&item.price) return item;
+         })
+       
         dispatch({
             type:MENUPOST_REQUEST,
             data:{
@@ -56,11 +144,14 @@ const manager2=()=>{
             boothName:boothname?boothname:codeInfo.boothName,
             opTimeOpen:opTimeOpen?opTimeOpen:codeInfo.opTimeOpen,
             opTimeClose:opTimeClose?opTimeClose:codeInfo.opTimeClose,
-            full:Btn,
-            menu:Menu
+            full:fullBtn,
+            menu:MenuList
             }
         })
-     },[boothname,opTimeOpen,opTimeClose,Btn,Menu,codeInfo])
+            alert("등록성공");
+            router.push('/manager');
+            return;
+     },[boothname,opTimeOpen,opTimeClose,Menu,codeInfo,fullBtn])
     const addTable=useCallback((e)=>{
         e.preventDefault();
         setRows([...rows,1]);
@@ -68,65 +159,54 @@ const manager2=()=>{
     },[rows]) 
 
     useEffect(()=>{
-        codeInfo.full&&setBtn(codeInfo.full);
+        if(codeInfo.full){
+            setFullBtn(true);
+            setEmptyBtn(false);
+        }
         codeInfo.Menus&&setMenu(Menu.map((item,index)=>{
             return codeInfo.Menus[index]?Object.assign(item,codeInfo.Menus[index]):item;
         }))
-        if (postSuccess) {
-             alert("등록성공");
-             dispatch({
-                 type:POSTSUCCESS,
-                 data:false
-             })
-         }
-         if(postSuccess&&!menuPostRequest) router.push('/manager');
-        
-    },[postSuccess,codeInfo,menuPostRequest])
+    },[])
 
     return(
         <>
         <form onSubmit={onSubmitForm}>
-            <div style={{marginTop:'2em',marginBottom:'2.7em'}}>
-                <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
+            <BoothNameDiv>
+                <img src="/oval1.png" ></img>
                 <label>부스이름</label>
-                <div style={{textAlignLast:'center',marginTop:'0.9em'}}>
-                <input onChange={setBoothname} defaultValue={codeInfo?(codeInfo.boothName?codeInfo.boothName:''):''} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' 
-                style={{ textAlign:'center', width: 300, height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
+                <div>
+                <input onChange={setBoothname} defaultValue={codeInfo?(codeInfo.boothName?codeInfo.boothName:''):''} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' >
                 </input>
                 </div>
-            </div>
-            <div>
-                <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
+            </BoothNameDiv>
+            <Openingtime>
+                <img src="/oval1.png"></img>
                 <label>운영시간</label>
-                <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <input onChange={setopTimeOpen} defaultValue={codeInfo?(codeInfo.opTimeOpen?codeInfo.opTimeOpen:''):''} name="opTimeOpen"  type='text' placeholder='00 : 00' 
-                style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
+                <div>
+                <input onChange={setopTimeOpen} defaultValue={codeInfo?(codeInfo.opTimeOpen?codeInfo.opTimeOpen:''):''} name="opTimeOpen"  type='text' placeholder='00 : 00'>
                 </input>
                  <label>  ~  </label>
-                 <input onChange={setopTimeClose}  defaultValue={codeInfo?(codeInfo.opTimeClose?codeInfo.opTimeClose:''):''} name="opTimeClose"  type='text' placeholder='00 : 00' 
-                style={{  textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#f0f0f0'}}>
+                 <input onChange={setopTimeClose}  defaultValue={codeInfo?(codeInfo.opTimeClose?codeInfo.opTimeClose:''):''} name="opTimeClose"  type='text' placeholder='00 : 00' >
                 </input>
             </div>
-            </div>
-            <div style={{marginTop:'2.7em',marginBottom:'2.7em'}}>
-                <img src="/oval1.png" style={{marginLeft:'1.8em',width:12,height:12}}></img>
+            </Openingtime>
+            <FullDiv>
+                <img src="/oval1.png"></img>
                 <label>만석여부</label>
-                <div style={{textAlign:'center',marginTop:'0.9em'}}>
-                <button type='button' title='만석' ref={fBtn} onClick={changeButton}  defaultChecked={Btn}
-                style={{ marginRight:'2.3em' ,textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
+                <div>
+                <FullBtn type='button' title='만석'  onClick={changeButton} borderColor={fullBtn?'1px solid #f00':'1px solid gray'} buttonColor={fullBtn?'#f00':'gray'}>
                     만석
-                </button>
-                 <button type='button' ref={eBtn} onClick={changeButton} defaultChecked={!Btn}
-                style={{  color:'#64a5ff',border:'1px solid #64a5ff',textAlign:'center',width: 131,height: 36,borderRadius: 7,backgroundColor: '#fff'}}>
-                    자리있음
-                </button>
+                </FullBtn>
+                 <EmptyBtn type='button'  onClick={changeButton} borderColor={emptyBtn?'1px solid #64a5ff':'1px solid gray'} buttonColor={emptyBtn?"#64a5ff":'gray'}>
+                   자리있음
+                </EmptyBtn>
                 </div>
-            </div>
-            <div>
-               <img src="/oval1.png" style={{marginLeft:'1.7rem',width:12,height:12}}></img>
+            </FullDiv>
+            <MenuPost>
+               <img src="/oval1.png"></img>
                <label>메뉴판</label>
-                <div style={{ display:'flex',justifyContent:'center'}}>
-                    <table  style={{width:'18.75rem',borderRadius: 7,backgroundColor: '#f0f0f0',textAlign:'center'}}>
+                <div>
+                    <Table>
                         <thead> 
                            <tr>
                             <th style={{borderBottom:'1px solid white',width:'50%'}}>음식</th>
@@ -155,12 +235,12 @@ const manager2=()=>{
                              } style={{border:'1px solid white'}}>
 
                              {
-                                 i===0&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
+                                 i===0&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.food}</>:<></>
                                  })}</>
                              }  
                              {
-                                 i===1&&codeInfo.Menus&&<>{codeInfo.Menus.map((ele,j)=>{
+                                 i===1&&codeInfo&&<>{codeInfo.Menus.map((ele,j)=>{
                                  return j===index?<>{ele.price}</>:<></>
                                  })}</>
                              }  
@@ -188,18 +268,22 @@ const manager2=()=>{
                          })
                          }         
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
-            </div>
+            </MenuPost>
             <div style={{textAlign:'center'}}>
                   {rows.length<10&&<label style={{color:'#223ca3',fontSize:13}} onClick={addTable}>+추가하기</label>}
             </div>
-              <footer style={{textAlign:'center'}}>
+        <footer style={{textAlign:'center'}}>
             <img onClick={onSubmitForm} src='/group.png'/>
         </footer>
         </form>
         </>
     )
 }   
+
+manager2.getInitialProps=async(ctx)=>{
+    return ctx.store.getState.codeInfo
+}
 
 export default manager2;

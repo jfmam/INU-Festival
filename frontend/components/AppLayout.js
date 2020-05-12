@@ -2,8 +2,9 @@ import React,{ useState, useRef, useCallback } from 'react';
 import styled from 'styled-components'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
+import {INDEXIMAGE_REQUEST} from '../store/image'
 
-const App=styled.div`
+const AppDiv=styled.div`
    @media (max-width:360px||max-height:640px) {
       max-width:360px;
       max-height:640px;
@@ -13,6 +14,13 @@ const App=styled.div`
     max-height:820px;
     }
     overflow:scroll;
+    &>header{
+         display:flex;
+ align-content:center;
+ justify-content:space-around;
+margin-top:20px;
+border-bottom:solid 1px #979797;
+    }
 `
 
 const Drawer=styled.aside`
@@ -28,11 +36,11 @@ const Drawer=styled.aside`
 `
 
 const Header=styled.header`
-    margin-top:20px;
-    display:flex;
-    align-content:center;
-    justify-content:space-around;
-    border-bottom:solid 1px #979797;
+ display:flex;
+ align-content:center;
+ justify-content:space-around;
+margin-top:20px;
+border-bottom:solid 1px #979797;
 
 `
 const DrawerBack=styled.div`
@@ -68,7 +76,7 @@ const AppLayout=({children})=>{
     }},[toggle])
 
     return(
-    <App>   
+    <AppDiv>   
     <Header ref={header}>
         {/* header */}
         <span><img onClick={()=>{router.push('/')}} style={{marginTop:20,width:24,height:21}} src='/path.png'></img></span>
@@ -86,7 +94,7 @@ const AppLayout=({children})=>{
         <img style={{marginLeft:'82%',marginTop:13.2}} onClick={async()=>{await getToggle(false);
         await drawer()
         }} src='/xbtn.png'></img>
-        <div className='router' style={{marginTop:90,marginLeft:50}}>
+        <div  style={{marginTop:90,marginLeft:50}}>
         {Menu.map((item,index)=>{
         return <Link  href={{pathname:`/${route[index]}`}}  as={`/${route[index]}`}><a onClick={()=>{
             setToggle(false)
@@ -94,7 +102,7 @@ const AppLayout=({children})=>{
         }}><p key={index} style={{borderBottom:'solid 1px #d3d3d3',width:132,paddingBottom:23.2}}>{item}</p></a></Link>
         })}
         </div>
-        <div className='adminPage' style={{marginLeft:'17%',marginTop:'16rem'}}>
+        <div style={{marginLeft:'17%',marginTop:'16rem'}}>
             <Link href={{pathname:'/manager'}}><a onClick={()=>{ setToggle(false)
             drawer();}}><strong>운영자페이지</strong></a></Link>
         </div>
@@ -104,8 +112,9 @@ const AppLayout=({children})=>{
     <section>
     {children}
     </section>
-    </App>
+    </AppDiv>
     )
 }
+
 
 export default AppLayout;
