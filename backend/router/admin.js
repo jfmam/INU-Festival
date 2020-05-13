@@ -32,6 +32,7 @@ router.get('/:code',async(req,res,next)=>{//부스 조회 api/admin
            attributes:['food','price','soldOut']
        }]
     });
+    console.log(adminCode);
     res.status(200).json(adminCode)
    
 }catch(e){

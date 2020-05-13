@@ -47,7 +47,7 @@ const FullDiv=styled.div`
 margin-top:2.7rem;
 margin-bottom:2.7rem;
 &>img{
-    marginleft:1.8rem;
+    margin-left:1.8rem;
     width:12px;
     height:12px;
 }
@@ -82,6 +82,7 @@ width:12px;
 height:12px;
 }
 &>div{
+margin-top:10px;
  display:flex;
  justify-content:center;
 }
