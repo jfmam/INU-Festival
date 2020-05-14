@@ -94,11 +94,13 @@ export default (state=initialState,action)=>{
                case GETALLBOOTHINFO_REQUEST:{
                draft.boothRequest=true;
                draft.boothError=''; 
+
                break;
            }
              case GETALLBOOTHINFO_SUCCESS:{
                draft.boothRequest=false; 
                draft.allBoothInfo=action.data;
+
                break;
            }
              case GETALLBOOTHINFO_FAILURE:{

@@ -41,7 +41,7 @@ const Header=styled.header`
  justify-content:space-around;
 margin-top:20px;
 border-bottom:solid 1px #979797;
-
+height:66px
 `
 const DrawerBack=styled.div`
 position:absolute;
@@ -54,8 +54,9 @@ opacity:0.7;
 `
 
 const AppLayout=({children})=>{
-    const Menu=['부스지도','야간셔틀버스','타임테이블'];
+    const Menu=['부스지도','야간 셔틀버스','타임테이블'];
     const route=['boothmap','shuttle','timetable'];
+    const [title,setTitle]=useState('INU대동제');
     const router=useRouter();
     const [toggle,setToggle]=useState(false);//redux,contextAPI사용
     const getToggle=(bool)=>{
@@ -66,7 +67,7 @@ const AppLayout=({children})=>{
     }
 
     const header=useRef();
-    const drawer=useCallback(async()=>{   
+    const drawer=useCallback(()=>{   
      if(!toggle){
         header.current.style.backgroundColor='rgba(35, 35, 35, 0.7)'
         header.current.style.opacity=0.7
@@ -79,8 +80,10 @@ const AppLayout=({children})=>{
     <AppDiv>   
     <Header ref={header}>
         {/* header */}
-        <span><img onClick={()=>{router.push('/')}} style={{marginTop:20,width:24,height:21}} src='/path.png'></img></span>
-        <span><p style={{marginTop:20,marginLeft:20,marginRight:20}}>INU대동제</p></span>
+        <span><img onClick={()=>{
+            setTitle('INU대동제');
+            router.push('/')}} style={{marginTop:20,width:24,height:21,}} src='/path.png'></img></span>
+        <span style={{marginTop:20,marginLeft:20,marginRight:20,}}><strong>{title}</strong></span>
         <span><img onClick={async()=>{
             await getToggle(true)
             drawer()
@@ -96,14 +99,17 @@ const AppLayout=({children})=>{
         }} src='/xbtn.png'></img>
         <div  style={{marginTop:90,marginLeft:50}}>
         {Menu.map((item,index)=>{
-        return <Link  href={{pathname:`/${route[index]}`}}  as={`/${route[index]}`}><a onClick={()=>{
+        return <Link key={index} href={{pathname:`/${route[index]}`}}  as={`/${route[index]}`}><a onClick={()=>{
             setToggle(false)
+            setTitle(Menu[index]);
             drawer();
         }}><p key={index} style={{borderBottom:'solid 1px #d3d3d3',width:132,paddingBottom:23.2}}>{item}</p></a></Link>
         })}
         </div>
         <div style={{marginLeft:'17%',marginTop:'16rem'}}>
-            <Link href={{pathname:'/manager'}}><a onClick={()=>{ setToggle(false)
+            <Link href={{pathname:'/manager'}}><a onClick={()=>{
+            setTitle('운영자 페이지');
+            setToggle(false)
             drawer();}}><strong>운영자페이지</strong></a></Link>
         </div>
     </Drawer>

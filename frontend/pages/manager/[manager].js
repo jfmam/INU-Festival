@@ -173,7 +173,7 @@ const manager2=(props)=>{
         <>
         <form onSubmit={onSubmitForm}>
             <BoothNameDiv>
-                <img src="/oval1.png" ></img>
+                <img src="/oval1.PNG" ></img>
                 <label>부스이름</label>
                 <div>
                 <input onChange={setBoothname} defaultValue={codeInfo?(codeInfo.boothName?codeInfo.boothName:''):''} name="boothName" type='text'  placeholder='부스 이름을 적어주세요 (최대 15자)' >
@@ -181,7 +181,7 @@ const manager2=(props)=>{
                 </div>
             </BoothNameDiv>
             <Openingtime>
-                <img src="/oval1.png"></img>
+                <img src="/oval1.PNG"></img>
                 <label>운영시간</label>
                 <div>
                 <input onChange={setopTimeOpen} defaultValue={codeInfo?(codeInfo.opTimeOpen?codeInfo.opTimeOpen:''):''} name="opTimeOpen"  type='text' placeholder='00 : 00'>
@@ -192,7 +192,7 @@ const manager2=(props)=>{
             </div>
             </Openingtime>
             <FullDiv>
-                <img src="/oval1.png"></img>
+                <img src="/oval1.PNG"></img>
                 <label>만석여부</label>
                 <div>
                 <FullBtn type='button' title='만석'  onClick={changeButton} borderColor={fullBtn?'1px solid #f00':'1px solid gray'} buttonColor={fullBtn?'#f00':'gray'}>
@@ -204,7 +204,7 @@ const manager2=(props)=>{
                 </div>
             </FullDiv>
             <MenuPost>
-               <img src="/oval1.png"></img>
+               <img src="/oval1.PNG"></img>
                <label>메뉴판</label>
                 <div>
                     <Table>

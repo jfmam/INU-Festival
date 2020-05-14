@@ -1,7 +1,7 @@
 import React from 'react';
 import AppLayout from '../components/AppLayout'
-import Head from 'next/head'
 import withRedux from 'next-redux-wrapper';
+import withReduxSaga from 'next-redux-saga';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -25,11 +25,11 @@ const Home=({Component,store,pageProps})=>{
           }, {
             'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
           }, {
-            name: 'description', content: 'INUfestival',
+            name: 'description', content: 'festival',
           }, {
-            name: 'og:title', content: 'INUfestival',
+            name: 'og:title', content: 'festival',
           }, {
-            name: 'og:description', content: 'INUfestival',
+            name: 'og:description', content: 'festival',
           }, {
             property: 'og:type', content: 'website',
           }]}
@@ -45,11 +45,11 @@ const Home=({Component,store,pageProps})=>{
 
 Home.getInitialProps=async (context)=>{
   const {ctx}=context;
-
   let pageProps={};
   if(context.Component.getInitialProps){
     pageProps=await context.Component.getInitialProps(ctx);
   }
+  
   return {pageProps};
 }
 
@@ -63,8 +63,8 @@ const configureStore = (initialState, options) => {
       !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     );
   const store = createStore(reducer, initialState, enhancer);
-  sagaMiddleware.run(rootSaga);
+  store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
 
-export default withRedux(configureStore)(Home);
+export default withRedux(configureStore)(withReduxSaga(Home));

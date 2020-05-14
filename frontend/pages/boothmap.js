@@ -44,19 +44,19 @@ const BoothInfo=styled.div`
 margin-top:24px;
 `
 const MenuInfo=styled.div`
-margin-top:50px;
+margin-top:40px;
 display:inline-block;
 overflow-y:scroll;
 padding-bottom:8px;
-width:16rem;
+width:16.5rem;
 border-bottom:1px solid rgba(35,35,35,0.7);
 `
 
 const MenuInfoDetail=styled.div`
 clear:both;
 display:inline-block;
-padding:8px;
-width:16rem;
+padding:7px;
+width:15.6rem;
 border-bottom:1px solid rgba(35,35,35,0.7);
 `
 
@@ -69,7 +69,6 @@ const Boothmap=()=>{
     const [boothInfo,setBoothInfo]=useState();//클릭한 부스의 정보를 보여준다
 
     const backgroundImage=useRef();
-
     const {allBoothInfo}=useSelector(state=>state.menu)
     const markerClick=useCallback(element=>()=>{
         setToggle(true);
@@ -88,12 +87,13 @@ const Boothmap=()=>{
     const closeBtn=useCallback(()=>{
         setDetail(false);
     },[detail])
+  
     return(
         <>
             <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'38rem'}}/>
             {toggle?
             <Fragment>
-            {markerPosition.map((item,index)=>{return <ClickMarker left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,2)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
+            {markerPosition.map((item,index)=>{return <ClickMarker key={index} left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,2)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
                {/* left는 -2 right는 -3.75해준다 */}
                <BoothInfo>  
                     <div>
@@ -124,11 +124,20 @@ const Boothmap=()=>{
                     {boothInfo[0].Menus.map((item,index)=>{
                         return(
                         <>
-                        <MenuInfoDetail>
-                        <span style={{float:'left',padding:4,marginLeft:'1rem'}}>{item.food}</span>
+                        <MenuInfoDetail key={index}>
                         {item.soldOut
-                        ?<span style={{float:'right',padding:4,marginRight:'1rem',color:'#f00'}}>품절</span>
-                        :<span style={{float:'right',padding:4,marginRight:'1rem'}}>{item.price}</span>
+                        ?(
+                        <>
+                         <span style={{float:'left',padding:4,marginLeft:'1rem',color:'rgba(35,35,35,0.7)'}}>{item.food}</span>
+                        <span style={{float:'right',padding:4,marginRight:'1rem',color:'#f00'}}>품절</span>
+                        </>
+                        )
+                        :(
+                         <>   
+                         <span style={{float:'left',padding:4,marginLeft:'1rem'}}>{item.food}</span>
+                        <span style={{float:'right',padding:4,marginRight:'1rem'}}>{item.price}</span>
+                        </>
+                        )
                         }
                         </MenuInfoDetail>
                         </>
@@ -145,7 +154,7 @@ const Boothmap=()=>{
                  }
             </Fragment> 
                 :markerPosition.map((item,index)=>{return (
-                <OriginMarker left={item.left} top={item.top} src='/shape.png' onClick={markerClick(item)}/>) 
+                <OriginMarker key={index} left={item.left} top={item.top} src='/shape.png' onClick={markerClick(item)}/>) 
              }) 
         }
          </>
