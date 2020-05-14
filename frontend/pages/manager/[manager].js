@@ -160,6 +160,11 @@ const manager2=(props)=>{
     },[rows]) 
 
     useEffect(()=>{
+        if(!codeInfo){
+            router.push('/manager');
+            alert('잘못 된 접근입니다.');
+            return;
+        }
         if(codeInfo.full){
             setFullBtn(true);
             setEmptyBtn(false);
