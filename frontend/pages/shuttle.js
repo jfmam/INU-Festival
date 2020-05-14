@@ -10,7 +10,7 @@ const Shuttle=()=>{
   return(
 
         <>   
-          <img style={{width:'100%',height:'38em'}}  src={`http://localhost:5000/${shuttleImage.shuttle}`}></img>
+          <img style={{width:'100%',height:'calc(100%-66px)'}}  src={`http://192.168.0.102:5000/${shuttleImage.shuttle}`}></img>
         </>
     )     
 }

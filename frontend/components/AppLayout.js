@@ -13,44 +13,36 @@ const AppDiv=styled.div`
     max-width:411px;
     max-height:820px;
     }
-    overflow:scroll;
-    &>header{
-         display:flex;
- align-content:center;
- justify-content:space-around;
-margin-top:20px;
-border-bottom:solid 1px #979797;
-    }
+ 
 `
 
 const Drawer=styled.aside`
     position:absolute;
     z-index:20;
     width:77%;
-    height:96%;
+    height:100%;
    background-color:#fff;
-   top:25px;
+   top:0;
    left:22%;
    border:1px solid #d3d3d3;
-   overflow:scroll;
 `
 
 const Header=styled.header`
  display:flex;
  align-content:center;
  justify-content:space-around;
-margin-top:20px;
 border-bottom:solid 1px #979797;
-height:66px
+margin-top:19px;
+height:46px;
 `
 const DrawerBack=styled.div`
 position:absolute;
 width:96%;
-top:25px;
-height:96%;
+top:0;
+height:100%;
 z-index:19;
 background-color:rgba(35, 35, 35, 0.7);
-opacity:0.7;
+
 `
 
 const AppLayout=({children})=>{
@@ -66,43 +58,43 @@ const AppLayout=({children})=>{
         })
     }
 
-    const header=useRef();
-    const drawer=useCallback(()=>{   
-     if(!toggle){
-        header.current.style.backgroundColor='rgba(35, 35, 35, 0.7)'
-        header.current.style.opacity=0.7
-    }else{
-        header.current.style.backgroundColor = '#fff'
-        header.current.style.opacity = 1
-    }},[toggle])
+    // const header=useRef();
+    // const drawer=useCallback(()=>{   
+    //  if(!toggle){
+    //     header.current.style.backgroundColor='rgba(35, 35, 35, 0.7)'
+    //     header.current.style.opacity=0.7
+    // }else{
+    //     header.current.style.backgroundColor = '#fff'
+    //     header.current.style.opacity = 1
+    // }},[toggle])
 
     return(
     <AppDiv>   
-    <Header ref={header}>
+    <Header >
         {/* header */}
         <span><img onClick={()=>{
             setTitle('INU대동제');
-            router.push('/')}} style={{marginTop:20,width:24,height:21,}} src='/path.png'></img></span>
-        <span style={{marginTop:20,marginLeft:20,marginRight:20,}}><strong>{title}</strong></span>
+            router.push('/')}} style={{width:24,height:21,}} src='/path.png'></img></span>
+        <span style={{marginLeft:20,marginRight:20,}}><strong>{title}</strong></span>
         <span><img onClick={async()=>{
             await getToggle(true)
-            drawer()
-        }} style={{width:24,height:21,marginTop:20}} src='/more.png'></img></span>
+            // drawer()
+        }} style={{width:24,height:21}} src='/more.png'></img></span>
     </Header>
     {/* drawer부분.. &&사용하기*/}
     {toggle&&
     <div>
     <DrawerBack />
     <Drawer>
-        <img style={{marginLeft:'82%',marginTop:13.2}} onClick={async()=>{await getToggle(false);
-        await drawer()
+        <img style={{marginLeft:'82%',marginTop:15}} onClick={async()=>{await getToggle(false);
+        // await drawer()
         }} src='/xbtn.png'></img>
         <div  style={{marginTop:90,marginLeft:50}}>
         {Menu.map((item,index)=>{
         return <Link key={index} href={{pathname:`/${route[index]}`}}  as={`/${route[index]}`}><a onClick={()=>{
             setToggle(false)
             setTitle(Menu[index]);
-            drawer();
+            // drawer();
         }}><p key={index} style={{borderBottom:'solid 1px #d3d3d3',width:132,paddingBottom:23.2}}>{item}</p></a></Link>
         })}
         </div>
@@ -110,7 +102,8 @@ const AppLayout=({children})=>{
             <Link href={{pathname:'/manager'}}><a onClick={()=>{
             setTitle('운영자 페이지');
             setToggle(false)
-            drawer();}}><strong>운영자페이지</strong></a></Link>
+            // drawer();
+            }}><strong>운영자페이지</strong></a></Link>
         </div>
     </Drawer>
     </div>

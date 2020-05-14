@@ -13,7 +13,7 @@ const OriginMarker=styled.img`
 const ClickMarker=styled.img`
     position:absolute;
     left:${props=>props.left};
-    top:13.75rem
+    top:${props=>props.top};
 `
 const OverLay=styled.div`
 z-index:500;
@@ -27,6 +27,7 @@ top:0;
 left:0;
 right:0;
 bottom:0;
+overflow:hidden;
 `
 const Modal=styled.div`
 z-index:501;
@@ -36,7 +37,7 @@ border-radius:22px;
 width:18rem;
 height:24rem;
 text-align:center;
-margin-top:11.6rem;
+margin-top:6.6rem;
 overflow-y:scroll
 `
 
@@ -62,25 +63,29 @@ border-bottom:1px solid rgba(35,35,35,0.7);
 
 
 const Boothmap=()=>{
-    const [toggle,setToggle]=useState(false)
     const [detail,setDetail]=useState(false)
-    const [markerPosition,setMarkerPosition]=useState([{code:1,left:position.CONS8_7_6_5_RIGHT,top:position.TOP2}]);
-    //position.js참조 
-    const [boothInfo,setBoothInfo]=useState();//클릭한 부스의 정보를 보여준다
-
+    const [markerPosition,setMarkerPosition]=useState([
+        {code:1,left:position.CONS8_7_6_5_RIGHT,top:position.TOP2},
+        {code:2,left:position.CONS8_7_6_5_RIGHT,top:position.TOP3}
+        ]);
+        //position.js참조 code와 position 위치를 넣는다.
+       const [toggle,setToggle]=useState(Array(markerPosition.length).fill(false));
+       console.log(toggle);
+        const [boothInfo,setBoothInfo]=useState();//클릭한 부스의 정보를 보여준다
+    
     const backgroundImage=useRef();
     const {allBoothInfo}=useSelector(state=>state.menu)
     const markerClick=useCallback(element=>()=>{
         setToggle(true);
-        backgroundImage.current.style.height='32rem'
+        backgroundImage.current.style.height='27rem'//-6rem을 해준값으로한다
         setBoothInfo(allBoothInfo.filter((item,index)=>{
             return item.code===element.code}));
     },[toggle,allBoothInfo,boothInfo])
       const markerUnClick=useCallback(()=>{
         setToggle(false);
-        backgroundImage.current.style.height='38rem'
+        backgroundImage.current.style.height='33rem'
          setBoothInfo(null);
-    },[toggle])
+    },[toggle,boothInfo])
     const more=useCallback(()=>{
        setDetail(true);
     },[detail])
@@ -90,10 +95,11 @@ const Boothmap=()=>{
   
     return(
         <>
-            <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'38rem'}}/>
+            <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'33rem'}}/>
             {toggle?
             <Fragment>
-            {markerPosition.map((item,index)=>{return <ClickMarker key={index} left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,2)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
+            {markerPosition.map((item,index)=>{
+                return <ClickMarker key={index} left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,item.top.length-3)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
                {/* left는 -2 right는 -3.75해준다 */}
                <BoothInfo>  
                     <div>

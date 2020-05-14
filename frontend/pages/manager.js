@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const CodeInput=styled.div`
 display:block;
 text-align:center;
-margin-top:188px;
+margin-top:122px;
 &>form>p{
 font-size:15px;
 }
@@ -73,7 +73,7 @@ const manager=()=>{
     },[codeRequest,codeInfo,code])
    return( 
     <>
-   <CodeInput style={{display:'block',textAlign:'center',marginTop:188}}>
+   <CodeInput>
     <form onSubmit={codeConfirm}>
        <p>코드를 입력해주세요</p>     
             <input ref={inputEL} type='text' onChange={onChangeCode}
