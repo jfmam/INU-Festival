@@ -70,19 +70,24 @@ const Boothmap=()=>{
         ]);
         //position.js참조 code와 position 위치를 넣는다.
        const [toggle,setToggle]=useState(Array(markerPosition.length).fill(false));
-       console.log(toggle);
         const [boothInfo,setBoothInfo]=useState();//클릭한 부스의 정보를 보여준다
     
     const backgroundImage=useRef();
     const {allBoothInfo}=useSelector(state=>state.menu)
-    const markerClick=useCallback(element=>()=>{
-        setToggle(true);
+    const markerClick=useCallback((element,i)=>()=>{
+        setToggle(toggle.map((item,index)=>{
+            return index===i?true:item
+        }))
         backgroundImage.current.style.height='27rem'//-6rem을 해준값으로한다
         setBoothInfo(allBoothInfo.filter((item,index)=>{
             return item.code===element.code}));
     },[toggle,allBoothInfo,boothInfo])
-      const markerUnClick=useCallback(()=>{
-        setToggle(false);
+      const markerUnClick=useCallback(i=>()=>{
+        setToggle(
+            toggle.map((item,index)=>{
+                return index===i?false:item
+            })
+        );
         backgroundImage.current.style.height='33rem'
          setBoothInfo(null);
     },[toggle,boothInfo])
@@ -96,10 +101,11 @@ const Boothmap=()=>{
     return(
         <>
             <img src='/boothmap.jpg' onClick={markerUnClick} ref={backgroundImage} style={{width:'100%',height:'33rem'}}/>
-            {toggle?
+            {toggle.map((element,i)=>{
+             element?   
             <Fragment>
             {markerPosition.map((item,index)=>{
-                return <ClickMarker key={index} left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,item.top.length-3)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick}/>})} 
+                return <ClickMarker key={index} left={`${item.left.slice(0,2)-2}%`} top={`${item.top.slice(0,item.top.length-3)-3.75}rem`} src='/clickShape.png' onClick={markerUnClick(i)}/>})} 
                {/* left는 -2 right는 -3.75해준다 */}
                <BoothInfo>  
                     <div>
@@ -159,9 +165,12 @@ const Boothmap=()=>{
                  </div> 
                  }
             </Fragment> 
-                :markerPosition.map((item,index)=>{return (
-                <OriginMarker key={index} left={item.left} top={item.top} src='/shape.png' onClick={markerClick(item)}/>) 
-             }) 
+                :markerPosition.map((item,index)=>{
+
+                return (
+                <OriginMarker key={index} left={item.left} top={item.top} src='/shape.png' onClick={markerClick(item,i)}/>) 
+             }) })
+            
         }
          </>
     )
