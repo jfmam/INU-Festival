@@ -51,12 +51,12 @@ const AppLayout=({children})=>{
     const [title,setTitle]=useState('INU대동제');
     const router=useRouter();
     const [toggle,setToggle]=useState(false);//redux,contextAPI사용
-    const getToggle=(bool)=>{
+    const getToggle=useCallback(bool=>()=>{
         return new Promise((resolve,reject)=>{
              setToggle(bool);
              resolve(toggle);
         })
-    }
+    },[toggle])
 
     // const header=useRef();
     // const drawer=useCallback(()=>{   
@@ -76,19 +76,14 @@ const AppLayout=({children})=>{
             setTitle('INU대동제');
             router.push('/')}} style={{width:24,height:21,}} src='/path.png'></img></span>
         <span style={{marginLeft:20,marginRight:20,}}><strong>{title}</strong></span>
-        <span><img onClick={async()=>{
-            await getToggle(true)
-            // drawer()
-        }} style={{width:24,height:21}} src='/more.png'></img></span>
+        <span><img onClick={ getToggle(true)} style={{width:24,height:21}} src='/more.png'></img></span>
     </Header>
     {/* drawer부분.. &&사용하기*/}
     {toggle&&
-    <div>
-    <DrawerBack />
+    <div onWheel={getToggle(false)}  >
+    <DrawerBack onTouchMove={getToggle(false)} onClick={getToggle(false)} />
     <Drawer>
-        <img style={{marginLeft:'82%',marginTop:15}} onClick={async()=>{await getToggle(false);
-        // await drawer()
-        }} src='/xbtn.png'></img>
+        <img style={{marginLeft:'82%',marginTop:15}} onClick={getToggle(false)} src='/xbtn.png'></img>
         <div  style={{marginTop:90,marginLeft:50}}>
         {Menu.map((item,index)=>{
         return <Link key={index} href={{pathname:`/${route[index]}`}}  as={`/${route[index]}`}><a onClick={()=>{
