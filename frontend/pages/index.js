@@ -7,7 +7,7 @@ const startPage=()=>{
 console.log(indexImage);
     return(
         <>
-          <img style={{width:'100%',height:'calc(100%-66px)'}} src={`http://192.168.0.102:5000/${indexImage.lineUp}`}></img>
+          <img style={{width:'100%',height:'calc(100%-66px)'}} src={`http://192.168.0.2:5000/${indexImage.lineUp}`}></img>
         </>
     )
 }
