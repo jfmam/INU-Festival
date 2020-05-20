@@ -11,5 +11,7 @@ export const ScheduleDiv = styled.div `
 padding:1rem;
 border-bottom:1px solid #979797;
 font-size:16px;
-
+`
+export const Strong=styled.strong`
+color:${props=>props.color}
 `

@@ -8,7 +8,6 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from '../store';
 import rootSaga from '../store-saga';
 import {Helmet} from 'react-helmet';
-import {Container} from 'next/app'
 
 const Home=({Component,store,pageProps})=>{
     return(

@@ -4,7 +4,9 @@
 install dependencies
 
 #npm run dev
-implements
+run dev mode
+
+
 
 #pages
 페이지 컴포넌트들은 pages 폴더에저장

@@ -3,64 +3,7 @@ import styled from 'styled-components'
 import {useDispatch,useSelector} from 'react-redux'
 import * as position from '../components/position'
 import {GETALLBOOTHINFO_REQUEST} from '../store/menu'
-
-
-const OriginMarker=styled.img`
-    position:absolute;
-    left:${props=>props.left};
-    top:${props=>props.top};
-`
-const ClickMarker=styled.img`
-    position:absolute;
-    left:${props=>props.left};
-    top:${props=>props.top};
-`
-const OverLay=styled.div`
-z-index:500;
-background-color:rgba(35,35,35,0.7);
-display:flex;
-justify-content:center;
-position:absolute;
-width:100%;
-height:100%;
-top:0;
-left:0;
-right:0;
-bottom:0;
-overflow:hidden;
-`
-const Modal=styled.div`
-z-index:501;
-position:absolute;
-background:white;
-border-radius:22px;
-width:18rem;
-height:24rem;
-text-align:center;
-margin-top:6.6rem;
-overflow-y:scroll
-`
-
-const BoothInfo=styled.div`
-margin-top:24px;
-`
-const MenuInfo=styled.div`
-margin-top:40px;
-display:inline-block;
-overflow-y:scroll;
-padding-bottom:8px;
-width:16.5rem;
-border-bottom:1px solid rgba(35,35,35,0.7);
-`
-
-const MenuInfoDetail=styled.div`
-clear:both;
-display:inline-block;
-padding:7px;
-width:15.6rem;
-border-bottom:1px solid rgba(35,35,35,0.7);
-`
-
+import {OriginMarker,ClickMarker,OverLay,Modal,BoothInfo,MenuInfo,MenuInfoDetail}from '../styles/BoothmapStyles'
 
 const Boothmap=()=>{
     const [detail,setDetail]=useState(false)//부스 상세정보 보기 

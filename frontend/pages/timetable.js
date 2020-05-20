@@ -2,25 +2,8 @@ import React, { useCallback, useState,useRef, Children, useEffect } from 'react'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 import { SCHEDULEGET_REQUEST,DATEGET_REQUEST } from '../store/timetable'
-import styled from 'styled-components';
+import {Nav,ScheduleDiv,Strong} from '../styles/TimetableStyles'
 
-const Nav=styled.nav`
-display:flex;
-justify-content:space-around;
-border-bottom:1px solid gray;
-margin-top:3rem;
-padding-bottom:1.38rem;
-color:#9b9b9b;
-`
-const ScheduleDiv=styled.div`
-padding:1rem;
-border-bottom:1px solid #979797;
-font-size:16px;
-
-`
-const Strong=styled.strong`
-color:${props=>props.color}
-`
 
 const TimeTable=({children})=>{
     const [date,setDate]=useState(null)

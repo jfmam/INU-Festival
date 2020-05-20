@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const App = styled.div `
+export const AppDiv=styled.div`
    @media (max-width:360px||max-height:640px) {
       max-width:360px;
       max-height:640px;
@@ -9,35 +9,42 @@ export const App = styled.div `
     max-width:411px;
     max-height:820px;
     }
-    overflow:scroll;
+    @media (max-width:1024px||max-height:820px) {
+    max-width:360px;
+    max-height:640px;
+    }
+ 
 `
 
-export const Drawer = styled.aside `
+export const Drawer=styled.aside`
     position:absolute;
     z-index:20;
     width:77%;
-    height:96%;
+    height:100%;
    background-color:#fff;
-   top:25px;
+   top:0;
    left:22%;
    border:1px solid #d3d3d3;
-   overflow:scroll;
 `
 
-export const Header = styled.header `
-    margin-top:20px;
-    display:flex;
-    align-content:center;
-    justify-content:space-around;
-    border-bottom:solid 1px #979797;
-
+export const Header=styled.header`
+ display:flex;
+ align-content:center;
+ justify-content:space-around;
+border-bottom:solid 1px #979797;
+margin-top:19px;
+height:46px;
 `
-export const DrawerBack = styled.div `
+export const DrawerBack=styled.div`
 position:absolute;
 width:96%;
-top:25px;
-height:96%;
+top:0;
+height:100%;
 z-index:19;
 background-color:rgba(35, 35, 35, 0.7);
-opacity:0.7;
+`
+
+export const Img=styled.img`
+width:100%;
+height:calc(100%-66px);
 `

@@ -4,8 +4,7 @@
   "description": "next.js\r react,\r redux,redux-saga",
   "main": "index.js",
   "dependencies": {
-    "@zeit/next-bundle-analyzer": "^0.1.2",
-    "antd": "^3.26.7",
+    "@next/bundle-analyzer": "^9.4.1",
     "axios": "^0.19.2",
     "create-react-app": "^3.3.0",
     "express": "^4.17.1",
@@ -14,7 +13,6 @@
     "next": "^9.2.1",
     "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^4.0.1",
-    "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.0.0",
@@ -25,11 +23,12 @@
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "nodemon": "^2.0.3"
   },
   "scripts": {
     "dev": "nodemon",
-    "build": "cross-env BUNDLE_ANALYZE=both next build",
+    "build": "cross-env ANALYZE=true next build",
     "start": "cross-env NODE_ENV=production next start"
   },
   "repository": {

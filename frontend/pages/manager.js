@@ -2,33 +2,8 @@ import React, { useState, useCallback, useRef, Fragment,useEffect } from 'react'
 import {useRouter} from 'next/router'
 import {useDispatch, useSelector} from 'react-redux'
 import {CODE_REQUEST, RESET} from '../store/menu';
-import styled from 'styled-components';
+import {CodeInput,CodeInquire} from '../styles/ManagerStyles'
 
-const CodeInput=styled.div`
-display:block;
-text-align:center;
-margin-top:122px;
-&>form>p{
-font-size:15px;
-}
-&>form>input{
-width:225px;
-height:41px;
-border-radius:7px;
-text-align:center;
-font-size:15px;
-background-color:#f0f0f0;
-margin-bottom:23px;
-margin-top:23px;
-}
-`
-const CodeInquire=styled.div`
-text-align:center;
-margin-top:12rem;
-&>a>img{
-    vertical-align:middle
-}
-`
 
 const manager=()=>{
     const [code,setCode]=useState('')
@@ -75,7 +50,7 @@ const manager=()=>{
     <>
    <CodeInput>
     <form onSubmit={codeConfirm}>
-       <p>코드를 입력해주세요</p>     
+       <strong>코드를 입력해주세요</strong>     
             <input ref={inputEL} type='text' onChange={onChangeCode}
                     value={code}>
         </input>

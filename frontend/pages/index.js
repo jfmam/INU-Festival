@@ -1,13 +1,15 @@
 import React,{useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import { INDEXIMAGE_REQUEST } from '../store/image';
+import {Img} from '../styles/AppLayoutStyle'
+
 //toggle을 redux에 넣어주고 나면 opacaty를 0.7정도로주자
 const startPage=()=>{
   const {indexImage}=useSelector(state=>state.image);
 console.log(indexImage);
     return(
         <>
-          <img style={{width:'100%',height:'calc(100%-66px)'}} src={`http://192.168.0.2:5000/${indexImage.lineUp}`}></img>
+          <Img  src={`http://192.168.0.2:5000/${indexImage.lineUp}`}></Img>
         </>
     )
 }
