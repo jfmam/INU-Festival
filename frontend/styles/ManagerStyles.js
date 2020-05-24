@@ -4,10 +4,10 @@ export const CodeInput = styled.div `
 display:block;
 text-align:center;
 margin-top:188px;
-&>p{
+&>form>strong{
 font-size:15px;
 }
-&>input{
+&>form>input{
 width:225px;
 height:41px;
 border-radius:7px;
