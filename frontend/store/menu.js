@@ -16,6 +16,10 @@ export const GETALLBOOTHINFO_REQUEST = 'FRONT/GETALLBOOTHINFO_REQUEST'
 export const GETALLBOOTHINFO_SUCCESS = 'FRONT/GETALLBOOTHINFO_SUCCESS'
 export const GETALLBOOTHINFO_FAILURE = 'FRONT/GETALLBOOTHINFO_FAILURE'
 
+export const CODECREATE_REQUEST='FRONT/CODECREATE_REQUEST'
+export const CODECREATE_SUCCESS='FRONT/CODECREATE_SUCCESS'
+export const CODECREATE_FAILURE='FRONT/CODECREATE_FAILURE'
+
 export const POSTSUCCESS='FRONT/POSTSUCCESS'
 export const RESET='FRONT/RESET'
 
@@ -31,7 +35,10 @@ export const initialState={
    boothRequst:false,
    boothError:'',
    allBoothInfo:null,
-   postSuccess:null
+   postSuccess:null,
+   codePostRequest:false,
+   codeMessege:'',
+   codePostError:''
 }
 
 
@@ -89,6 +96,22 @@ export default (state=initialState,action)=>{
              case CODE_FAILURE:{
                draft.codeRequest=false;
                draft.codeError=action.error 
+               break;
+           }
+                case CODECREATE_REQUEST:{
+               draft.codeRequest=true;
+                draft.codeMessege='';
+               draft.codeError='';
+               break;
+           }
+             case CODECREATE_SUCCESS:{
+               draft.codePostRequest=false; 
+               draft.codeMessege=action.data
+               break;
+           }
+             case CODECREATE_FAILURE:{
+               draft.codePostRequest=false;
+               draft.codePostError=action.error 
                break;
            }
                case GETALLBOOTHINFO_REQUEST:{

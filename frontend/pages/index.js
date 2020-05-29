@@ -9,7 +9,7 @@ const startPage=()=>{
 console.log(indexImage);
     return(
         <>
-          <Img  src={`http://192.168.0.2:5000/${indexImage.lineUp}`}></Img>
+          <Img  src={`http://192.168.43.157:5000/${indexImage.lineUp}`}></Img>
         </>
     )
 }

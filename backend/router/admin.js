@@ -75,6 +75,23 @@ router.patch('/',async(req,res,next)=>{//부스 등록
     }
 })
 
+router.post('/code',async(req,res,next)=>{
+    try{
+        const codeFind=await db.Admin.findOne({
+            where:req.body.code
+        })
+        if(codeFind){
+            res.send("이미 존재하는 코드입니다")
+            return;
+        }
+        const codeCretate=await db.Admin.create({
+            code:req.body.code
+        })
+        res.send("코드등록 성공");
+    }catch(e){
+        res.send(e);
+    }
+})
 
 
 module.exports = router;
