@@ -7,10 +7,11 @@ const Admin=()=>{
     const [index,setIndex]=useState();
     const [shuttle,setShuttle]=useState();
     const [code,setCode]=useState(0);
-    const [sc, setSc] = useState();
     const {scheduleInfo}=useSelector(state=>state.timetable);
     const [postSchedule,setPostSchedule]=useState();
     const [updateSchedule,setUpdateSchedule]=useState();
+    const [userId,setUserId]=useState('');
+    const [password,setPassword]=useState('');
     const dispatch=useDispatch();
     const indexImgChange=useCallback((e)=>{
         setIndex(e.target.files)
@@ -69,8 +70,24 @@ const Admin=()=>{
         data:Number(index+1)
     })
    }, [updateSchedule])
+   const onChangeUserId=useCallback((e)=>{
+       setUserId(e.target.value)
+   },[userId])
+     const onChangePwd=useCallback((e)=>{
+       setPassword(e.target.value)
+   },[password])
+   const onSubmitAdmin=useCallback(()=>{
+       dispatch({
+           type:SIGNUP_REQUEST,//만들기
+           data:{
+               userId,
+               password
+           }
+       })
+   },[userId,password])
    useEffect(()=>{
        setUpdateSchedule(scheduleInfo);
+       //user정보없을시에 다시 뒤로 되돌리기
    },[scheduleInfo]);
 
     return(
@@ -116,6 +133,14 @@ const Admin=()=>{
                 </div>
             )
         })}
+        </form>
+
+        <form onSubmit={onSubmitAdmin}>
+            <label>아이디입력</label>
+            <input type="text" onChange={onChangeUserId}/>
+            <label>비밀번호입력</label>
+            <input type="password" onChange={onChangePwd}/>
+             <button htmlType="submit">등록하기</button> 
         </form>
         </>
     )

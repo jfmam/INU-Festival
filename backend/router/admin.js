@@ -93,5 +93,43 @@ router.post('/code',async(req,res,next)=>{
     }
 })
 
+router.post('/', async (req, res, next) => {       // POST /api/user 회원가입
+    try {
+        const exUser = await db.User.findAll({});
+        if(exUser){
+            return res.status(403).send('이미 존재 합니다.');
+        }
+        const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        const newUser = await db.user.create({
+            userId: req.body.userId,
+            password: hashedPassword,
+        })
+        console.log(newUser);
+        return res.status(200).json(newUser).send('회원가입 성공!');
+    } catch (e) {
+        console.log(e);
+        return res.status(403).send(e);
+    }
+});
+
+router.post('/login', async (req,res, next)=>{     //POST /api/user/login
+    passport.authenticate('local', (err, userinfo, info)=>{
+        if(err){
+            console.error(err);
+            return next(err);
+        }
+        if(info){
+            return res.status(401).send(info.reason);
+        }
+        return req.login(userinfo, (loginErr)=>{
+            if(loginErr){
+                return next(loginErr);
+            }
+            const filteredUser = Object.assign({}, userinfo.toJSON());
+            delete filteredUser.password;
+            return res.status(200).json(filteredUser);
+        });
+    })(req,res,next);
+});
 
 module.exports = router;
