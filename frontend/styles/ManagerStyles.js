@@ -21,7 +21,7 @@ margin-top:23px;
 export const CodeInquire = styled.div `
 text-align:center;
 margin-top:12rem;
-&>img{
+&>a>img{
     vertical-align:middle
 }
 `

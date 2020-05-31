@@ -7,7 +7,7 @@ const Shuttle=()=>{
   const {shuttleImage}=useSelector(state=>state.image);
   return(
         <>   
-          <Img src={`http://192.168.43.157:5000/${shuttleImage.shuttle}`}></Img>
+          <Img src={`http://192.168.0.2:5000/${shuttleImage.shuttle}`}></Img>
         </>
     )     
 }
