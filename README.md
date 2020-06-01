@@ -24,9 +24,6 @@ save static files
 - dotenv
 - multer
 </hr>
-## Funtuin Introduction
-| Function | Implementation | prority |
-|---|---|---|
-|
+
 
 
