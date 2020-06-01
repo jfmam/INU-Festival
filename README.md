@@ -1,26 +1,32 @@
 # INUFestival
 </hr>
-#frontend
+# frontend
 react
-#backend
+# backend
 node express
 
-##pages
+## pages
 page Component
 
-##public
+## public
 save static files
 
 </hr>
 
-#Using API
-##frontend
+# Using library
+## Frontend
 - redux
--redux-saga
--react-helmet
--next.js
-##backend
--sequelize ORM
--dotenv
--multer
+- redux-saga
+- react-helmet
+- next.js
+## Backend
+- sequelize ORM
+- dotenv
+- multer
+</hr>
+## Funtuin Introduction
+| Function | Implementation | prority |
+|---|---|---|
+|
+
 
